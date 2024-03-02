@@ -27,13 +27,12 @@ jobs:
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        npm run publish:patch
+        
         npm ci
         npm test
         npm run tsc --if-present
-        npm run publish:patch
-        echo "git add"
         git add .
-        echo "git commit"
         git commit  -m "github-actions[bot]:build"
         
     - name: Push changes
