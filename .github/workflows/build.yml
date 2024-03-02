@@ -18,8 +18,6 @@ jobs:
         node-version: 20.x
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
         cache: 'npm'
-    - uses: actions/checkout@v4
-      with:
         persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
         fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
     - name: Create local changes
