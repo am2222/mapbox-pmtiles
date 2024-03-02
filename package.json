@@ -1,0 +1,29 @@
+{
+  "name": "mapbox-pmtiles",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "scripts": {
+    "test": "vitest",
+    "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json && esbuild dist/esm/index.js --minify --outfile=dist/mapbox-pmtiles.esm.min.js && esbuild dist/cjs/index.js --minify --outfile=dist/mapbox-pmtiles.cjs.min.js",
+    "prepublishOnly": "npm run tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "vite": "^5.1.4",
+    "vitest": "^1.3.1"
+  },
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "files": [
+    "dist/"
+  ],
+  "dependencies": {
+    "@types/mapbox-gl": "^2.7.21",
+    "mapbox-gl": "^3.1.2",
+    "pmtiles": "^3.0.3"
+  }
+}
