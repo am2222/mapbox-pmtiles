@@ -92,10 +92,6 @@ type MapboxMap = mapboxgl.Map & {
 }
 
 type PmTilesOptions = {
-    loadTile: any;
-    bounds: any;
-    hasTile: any;
-    onRemove: any;
     url: string
 }
 
@@ -157,7 +153,10 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
     _collectResourceTiming: boolean = false;
     _tileJSONRequest: Promise<any> | undefined;
 
-
+    static async getMetadata(url:string): Promise<any>{
+        const instance = new PMTiles(url);
+        return instance.getMetadata()
+    }
 
     constructor(...args: [string, PmTilesOptions, any, any]) {
         super(...args);
@@ -189,10 +188,6 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
 
         if (!this._implementation) {
             this.fire?.call(new ErrorEvent(new Error(`Missing implementation for ${this.id} custom source`)));
-        }
-
-        if (!this._implementation.loadTile) {
-            this.fire?.call(new ErrorEvent(new Error(`Missing loadTile implementation for ${this.id} custom source`)));
         }
 
         // if (this._implementation.bounds) {
@@ -241,11 +236,6 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
                 this.fire?.call(new ErrorEvent(err));
                 if (callback) callback(err);
             });
-        // const pmtiles_querystring = `pmtiles=true&z={z}&x={x}&y={y}`;
-        // metadata.tiles = [`${pmtiles_http_url}?${pmtiles_querystring}`];
-        // // return new Response(JSON.stringify(metadata), { status: 206 })
-
-        // this._tileJSONRequest = JSON.stringify(metadata);
     }
     loaded(): boolean {
         return this._loaded;
@@ -362,13 +352,6 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
             tile.request = this._protocol.tile({ ...tile, url }, afterLoad);
         }
         console.log(url)
-    }
-
-
-    onRemove(map: mapboxgl.Map) {
-        if (this._implementation.onRemove) {
-            this._implementation.onRemove(map);
-        }
     }
 }
 // @ts-expect-error
