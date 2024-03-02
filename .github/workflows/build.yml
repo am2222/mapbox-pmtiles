@@ -26,8 +26,8 @@ jobs:
         npm test
         npm run tsc --if-present
         npm run publish:patch
-        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git commit -a -m "Build"
     - name: Push changes
       uses: ad-m/github-push-action@master
