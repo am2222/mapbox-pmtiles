@@ -31,7 +31,9 @@ jobs:
         npm test
         npm run tsc --if-present
         npm run publish:patch
+        echo "git add"
         git add .
+        echo "git commit"
         git commit  -m "github-actions[bot]:build"
         
     - name: Push changes
@@ -43,7 +45,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
           node-version: 20.x
