@@ -31,8 +31,8 @@ jobs:
         npm test
         npm run tsc --if-present
         npm run publish:patch
-
-        git commit -a -m "Build"
+        git add .
+        git commit  -m "github-actions[bot]:build"
         
     - name: Push changes
       uses: ad-m/github-push-action@master
