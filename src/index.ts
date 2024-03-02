@@ -3,7 +3,7 @@ import mapboxgl, { Style } from "mapbox-gl";
 import { PMTiles, Protocol } from "pmtiles";
 
 // @ts-expect-error
-const VectorTileSourceImpl = Style.getSourceType("vector");
+const VectorTileSourceImpl = mapboxgl.Style.getSourceType("vector");
 export const SOURCE_TYPE = "pmtile-source";
 
 const extend = (dest: any, ...sources: any): any => {
@@ -330,20 +330,8 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
             tile.actor = this._tileWorkers[url] = this._tileWorkers[url] || this.dispatcher.getActor();
 
             tile.request = this._protocol.tile({ ...tile, url }, afterLoad);
-            // if workers are not ready to receive messages yet, use the idle time to preemptively
-            // load tiles on the main thread and pass the result instead of requesting a worker to do so
-            // if (!this.dispatcher.ready) {
+            // always load tiles on the main thread and pass the result instead of requesting a worker to do so
 
-            //     tile.request= this._protocol.tile({ ...tile, url }, afterLoad);
-            // } else {
-            //     tile.request = tile.actor.send(
-            //         "loadTile",
-            //         params,
-            //         done.bind(this),
-            //         undefined,
-            //         true
-            //     );
-            // }
         } else if (tile.state === "loading") {
             // schedule tile reloading after it has been loaded
             tile.reloadCallback = callback;
@@ -355,6 +343,6 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
     }
 }
 // @ts-expect-error
-Style.setSourceType(PmTilesSource.SOURCE_TYPE, PmTilesSource);
+mapboxgl.Style.setSourceType(PmTilesSource.SOURCE_TYPE, PmTilesSource);
 
 export default PmTilesSource;
