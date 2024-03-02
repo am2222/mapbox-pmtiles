@@ -12,7 +12,7 @@ var _a;
 import mapboxgl from "mapbox-gl";
 import { PMTiles, Protocol } from "pmtiles";
 // @ts-expect-error
-const VectorTileSourceImpl = Style.getSourceType("vector");
+const VectorTileSourceImpl = mapboxgl.Style.getSourceType("vector");
 export const SOURCE_TYPE = "pmtile-source";
 const extend = (dest, ...sources) => {
     for (const src of sources) {
@@ -220,19 +220,7 @@ export const PmTilesSource = (_a = class PmTileSourceImpl extends VectorTileSour
             if (!tile.actor || tile.state === "expired") {
                 tile.actor = this._tileWorkers[url] = this._tileWorkers[url] || this.dispatcher.getActor();
                 tile.request = this._protocol.tile(Object.assign(Object.assign({}, tile), { url }), afterLoad);
-                // if workers are not ready to receive messages yet, use the idle time to preemptively
-                // load tiles on the main thread and pass the result instead of requesting a worker to do so
-                // if (!this.dispatcher.ready) {
-                //     tile.request= this._protocol.tile({ ...tile, url }, afterLoad);
-                // } else {
-                //     tile.request = tile.actor.send(
-                //         "loadTile",
-                //         params,
-                //         done.bind(this),
-                //         undefined,
-                //         true
-                //     );
-                // }
+                // always load tiles on the main thread and pass the result instead of requesting a worker to do so
             }
             else if (tile.state === "loading") {
                 // schedule tile reloading after it has been loaded
@@ -248,6 +236,6 @@ export const PmTilesSource = (_a = class PmTileSourceImpl extends VectorTileSour
     _a.SOURCE_TYPE = SOURCE_TYPE,
     _a);
 // @ts-expect-error
-Style.setSourceType(PmTilesSource.SOURCE_TYPE, PmTilesSource);
+mapboxgl.Style.setSourceType(PmTilesSource.SOURCE_TYPE, PmTilesSource);
 export default PmTilesSource;
 //# sourceMappingURL=index.js.map

@@ -18,7 +18,7 @@ exports.PmTilesSource = exports.SOURCE_TYPE = void 0;
 const mapbox_gl_1 = __importDefault(require("mapbox-gl"));
 const pmtiles_1 = require("pmtiles");
 // @ts-expect-error
-const VectorTileSourceImpl = mapbox_gl_1.Style.getSourceType("vector");
+const VectorTileSourceImpl = mapbox_gl_1.default.Style.getSourceType("vector");
 exports.SOURCE_TYPE = "pmtile-source";
 const extend = (dest, ...sources) => {
     for (const src of sources) {
@@ -226,19 +226,7 @@ exports.PmTilesSource = (_a = class PmTileSourceImpl extends VectorTileSourceImp
             if (!tile.actor || tile.state === "expired") {
                 tile.actor = this._tileWorkers[url] = this._tileWorkers[url] || this.dispatcher.getActor();
                 tile.request = this._protocol.tile(Object.assign(Object.assign({}, tile), { url }), afterLoad);
-                // if workers are not ready to receive messages yet, use the idle time to preemptively
-                // load tiles on the main thread and pass the result instead of requesting a worker to do so
-                // if (!this.dispatcher.ready) {
-                //     tile.request= this._protocol.tile({ ...tile, url }, afterLoad);
-                // } else {
-                //     tile.request = tile.actor.send(
-                //         "loadTile",
-                //         params,
-                //         done.bind(this),
-                //         undefined,
-                //         true
-                //     );
-                // }
+                // always load tiles on the main thread and pass the result instead of requesting a worker to do so
             }
             else if (tile.state === "loading") {
                 // schedule tile reloading after it has been loaded
@@ -254,6 +242,6 @@ exports.PmTilesSource = (_a = class PmTileSourceImpl extends VectorTileSourceImp
     _a.SOURCE_TYPE = exports.SOURCE_TYPE,
     _a);
 // @ts-expect-error
-mapbox_gl_1.Style.setSourceType(exports.PmTilesSource.SOURCE_TYPE, exports.PmTilesSource);
+mapbox_gl_1.default.Style.setSourceType(exports.PmTilesSource.SOURCE_TYPE, exports.PmTilesSource);
 exports.default = exports.PmTilesSource;
 //# sourceMappingURL=index.js.map
