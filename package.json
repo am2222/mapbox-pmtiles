@@ -5,10 +5,10 @@
   "description": "",
   "scripts": {
     "test": "vitest",
-    "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json && esbuild dist/esm/index.js --minify --outfile=dist/mapbox-pmtiles.esm.min.js && esbuild dist/cjs/index.js --minify --outfile=dist/mapbox-pmtiles.cjs.min.js && npm version patch",
-    "publish:patch": "npm version patch && npm publish",
-    "publish:minor": "npm version minor && npm publish",
-    "publish:major": "npm version major && npm publish",
+    "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json && esbuild dist/esm/index.js --minify --outfile=dist/mapbox-pmtiles.esm.min.js && esbuild dist/cjs/index.js --minify --outfile=dist/mapbox-pmtiles.cjs.min.js",
+    "publish:patch": "npm version patch",
+    "publish:minor": "npm version minor",
+    "publish:major": "npm version major",
     "publish": "npm publish",
     "docs:build": "mkdocs build",
     "docs:serve": "mkdocs serve"
