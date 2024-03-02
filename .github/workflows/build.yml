@@ -28,12 +28,7 @@ jobs:
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
         npm run publish:patch
-        
-        npm ci
-        npm test
-        npm run tsc --if-present
-        git add .
-        git commit  -m "github-actions[bot]:build"
+
         
     - name: Push changes
       uses: ad-m/github-push-action@master
