@@ -2,7 +2,7 @@
   "name": "mapbox-pmtiles",
   "version": "1.0.3",
   "type": "module",
-  "description": "",
+  "description": "A custom source to add PmTiles support to mapbox gl js",
   "scripts": {
     "test": "vitest",
     "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json && esbuild dist/esm/index.js --minify --outfile=dist/mapbox-pmtiles.esm.min.js && esbuild dist/cjs/index.js --minify --outfile=dist/mapbox-pmtiles.cjs.min.js",
@@ -12,7 +12,6 @@
     "preversion": "npm ci && npm run test",
     "version": "npm run tsc && git add -A dist",
     "postversion": "echo postversion",
-    "publish": "npm publish",
     "docs:build": "mkdocs build",
     "docs:serve": "mkdocs serve"
   },
