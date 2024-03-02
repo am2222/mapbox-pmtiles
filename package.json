@@ -1,6 +1,6 @@
 {
   "name": "mapbox-pmtiles",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "type": "module",
   "description": "A custom source to add PmTiles support to mapbox gl js",
   "scripts": {
@@ -49,5 +49,5 @@
     "mapbox-gl": "^3.1.2",
     "pmtiles": "^3.0.3"
   },
-  "jsdelivr":"dist/mapbox-pmtiles.esm.js"
+  "jsdelivr": "dist/mapbox-pmtiles.esm.js"
 }
