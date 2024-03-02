@@ -11,7 +11,7 @@
     "publish:major": "npm version major",
     "preversion": "npm ci && npm run test",
     "version": "npm run tsc && git add -A dist",
-    "postversion": "git add . && git commit  -m github-actions[bot]:build && git push && git push --tags ",
+    "postversion": "echo postversion",
     "publish": "npm publish",
     "docs:build": "mkdocs build",
     "docs:serve": "mkdocs serve"
