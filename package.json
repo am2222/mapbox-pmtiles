@@ -9,7 +9,7 @@
     "publish:patch": "npm version patch",
     "publish:minor": "npm version minor",
     "publish:major": "npm version major",
-    "preversion": "npm run test",
+    "preversion": "npm ci && npm run test",
     "version": "npm run tsc && git add -A dist",
     "postversion": "git add . && git commit  -m github-actions[bot]:build && git push && git push --tags ",
     "publish": "npm publish",
