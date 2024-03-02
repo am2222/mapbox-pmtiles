@@ -9,7 +9,17 @@
     // "disableSourceOfProjectReferenceRedirect": true,  /* Disable preferring source files instead of declaration files when referencing composite projects. */
     // "disableSolutionSearching": true,                 /* Opt a project out of multi-project reference checking when editing. */
     // "disableReferencedProjectLoad": true,             /* Reduce the number of projects loaded automatically by TypeScript. */
-
+    // Generate d.ts files
+    "declaration": true,
+    // This compiler run should
+    // only output d.ts files
+    "emitDeclarationOnly": true,
+    // Types should go into this directory.
+    // Removing this would place the .d.ts files
+    // next to the .js files
+    // go to js file when using IDE functions like
+    // "Go to Definition" in VSCode
+    "declarationMap": true,
     /* Language and Environment */
     "target": "es2016",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
     // "lib": [],                                        /* Specify a set of bundled library declaration files that describe the target runtime environment. */
