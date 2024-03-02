@@ -6,11 +6,31 @@
   "scripts": {
     "test": "vitest",
     "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json && esbuild dist/esm/index.js --minify --outfile=dist/mapbox-pmtiles.esm.min.js && esbuild dist/cjs/index.js --minify --outfile=dist/mapbox-pmtiles.cjs.min.js",
-    "prepublishOnly": "npm run tsc"
+    "publish:patch": "npm version patch && npm publish",
+    "publish:minor": "npm version minor && npm publish",
+    "publish:major": "npm version major && npm publish",
+    "docs:build": "mkdocs build",
+    "docs:serve": "mkdocs serve"
+  },
+  "author": {
+    "name": "Majid Hojati",
+    "email": "hoja4090@mylaureir.ca",
+    "url": "https://github.com/am2222"
+  },
+  "maintainers": [
+    {
+      "name": "Majid Hojati",
+      "email": "hoja4090@mylaureir.ca",
+      "url": "https://github.com/am2222"
+    }
+  ],
+  "engines": {
+    "node": ">=12.x.x <=16.x.x",
+    "npm": ">=6.0.0"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "license": "MIT",
+  "homepage": "https://github.com/am2222/strapi-plugin-postgis",
   "devDependencies": {
     "typescript": "^5.3.3",
     "vite": "^5.1.4",
