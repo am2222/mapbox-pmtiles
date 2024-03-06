@@ -342,7 +342,4 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
         console.log(url)
     }
 }
-// @ts-expect-error
-mapboxgl.Style.setSourceType(PmTilesSource.SOURCE_TYPE, PmTilesSource);
-
 export default PmTilesSource;
