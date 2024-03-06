@@ -137,7 +137,7 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
     maxTileCacheSize: number | undefined;
     promoteId: string | undefined;
     type: string = 'vector';
-    fire: Function | undefined;
+    fire!: Function;
     scope: string | undefined;
     dispatcher;
     reparseOverscaled: boolean;
@@ -165,9 +165,11 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
         this._dataType = 'vector';
         this.dispatcher = dispatcher;
         this._implementation = implementation;
+        if (!this._implementation) {
+            this.fire(new ErrorEvent(new Error(`Missing implementation for ${this.id} custom source`)));
+        }
 
         const { url } = implementation;
-        this.setEventedParent(eventedParent);
 
         this.reparseOverscaled = true;
         this.scheme = 'zxy';
@@ -186,9 +188,7 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
         this._protocol.add(p);
         this._instance = p;
 
-        if (!this._implementation) {
-            this.fire?.call(new ErrorEvent(new Error(`Missing implementation for ${this.id} custom source`)));
-        }
+
 
         // if (this._implementation.bounds) {
         //     this.tileBounds = new TileBounds(this._implementation.bounds, this.minzoom, this.maxzoom);
@@ -201,7 +201,7 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
     }
     load(callback?: Callback<void>) {
         this._loaded = false;
-        this.fire?.call(new Event("dataloading", { dataType: "source" }));
+        this.fire(new Event("dataloading", { dataType: "source" }));
 
         this._tileJSONRequest = this._instance
             .getMetadata()
@@ -225,15 +225,15 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
                 // `content` is included here to prevent a race condition where `Style#updateSources` is called
                 // before the TileJSON arrives. this makes sure the tiles needed are loaded once TileJSON arrives
                 // ref: https://github.com/mapbox/mapbox-gl-js/pull/4347#discussion_r104418088
-                this.fire?.call(
+                this.fire(
                     new Event("data", { dataType: "source", sourceDataType: "metadata" })
                 );
-                this.fire?.call(
+                this.fire(
                     new Event("data", { dataType: "source", sourceDataType: "content" })
                 );
             })
             .catch((err: any) => {
-                this.fire?.call(new ErrorEvent(err));
+                this.fire(new ErrorEvent(err));
                 if (callback) callback(err);
             });
     }
