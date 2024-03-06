@@ -55,7 +55,7 @@ export declare const PmTilesSource: {
         maxTileCacheSize: number | undefined;
         promoteId: string | undefined;
         type: string;
-        fire: Function | undefined;
+        fire: Function;
         scope: string | undefined;
         dispatcher: any;
         reparseOverscaled: boolean;
