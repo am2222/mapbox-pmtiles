@@ -51,3 +51,8 @@ import mapboxPmtiles from 'https://cdn.jsdelivr.net/npm/mapbox-pmtiles/+esm'
 
 
 ```
+
+
+<div class="map">
+  <iframe src="./docs/assets/map.html"></iframe>
+</div>
