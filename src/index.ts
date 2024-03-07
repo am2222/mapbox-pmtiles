@@ -1,11 +1,22 @@
 // Mapbox import
-import mapboxgl, { Style } from "mapbox-gl";
-import { PMTiles, Protocol } from "pmtiles";
+import mapboxgl from "mapbox-gl";
+import { PMTiles, Protocol, TileType } from "pmtiles";
 
 // @ts-expect-error
 const VectorTileSourceImpl = mapboxgl.Style.getSourceType("vector");
 export const SOURCE_TYPE = "pmtile-source";
 
+
+
+type RasterDataType = 'raster';
+type VectorDataType = 'vector';
+
+const isRaster = (data: any): boolean => {
+    return data instanceof ImageData ||
+        data instanceof HTMLCanvasElement ||
+        data instanceof ImageBitmap ||
+        data instanceof HTMLImageElement;
+}
 const extend = (dest: any, ...sources: any): any => {
     for (const src of sources) {
         for (const k in src) {
@@ -95,7 +106,10 @@ type PmTilesOptions = {
     url: string
 }
 
+
+
 type Tile = {
+    setTexture(arg0: (data: any) => any, painter: any): unknown;
     request: any;
     aborted: any;
     resourceTiming: any;
@@ -125,14 +139,14 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
     id: string;
     scheme: string;
     minzoom!: number;
-    maxzoom!: number ;
+    maxzoom!: number;
     tileSize: number;
     attribution: string | undefined;
     tiles: string[];
-    map!: MapboxMap ;
+    map!: MapboxMap;
 
     roundZoom: boolean = true;
-    tileBounds:TileBounds | undefined;
+    tileBounds: TileBounds | undefined;
     minTileCacheSize: number | undefined;
     maxTileCacheSize: number | undefined;
     promoteId: string | undefined;
@@ -152,8 +166,11 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
     _instance: PMTiles;
     _collectResourceTiming: boolean = false;
     _tileJSONRequest: Promise<any> | undefined;
+    loadTile!: (tile: Tile, callback: Callback<void>) => void;
+    tileType!: TileType;
+    header: any;
 
-    static async getMetadata(url:string): Promise<any>{
+    static async getMetadata(url: string): Promise<any> {
         const instance = new PMTiles(url);
         return instance.getMetadata()
     }
@@ -188,12 +205,16 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
         this._protocol.add(p);
         this._instance = p;
 
+    }
 
+    zoomToExtent() {
+        const { minZoom, maxZoom, minLon, minLat, maxLon, maxLat, centerZoom, centerLon, centerLat } = this.header
 
-        // if (this._implementation.bounds) {
-        //     this.tileBounds = new TileBounds(this._implementation.bounds, this.minzoom, this.maxzoom);
-        // }
+        if (minZoom != null && maxZoom != null && minLon != null && minLat != null && maxLon != null && maxLat != null) {
 
+            this.map.fitBounds([centerLat, centerLon
+            ], { maxZoom: centerZoom });
+        }
     }
 
     hasTile(tileID: TileID) {
@@ -203,35 +224,56 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
         this._loaded = false;
         this.fire(new Event("dataloading", { dataType: "source" }));
 
-        this._tileJSONRequest = this._instance
-            .getMetadata()
-            .then((tileJSON: any) => {
-                this._tileJSONRequest = undefined;
-                this._loaded = true;
+        this._tileJSONRequest = this._instance.getHeader().then((header: any) => {
 
-                extend(this, tileJSON);
+            this.header = header;
+            const { specVersion, clustered, tileType, minZoom, maxZoom, minLon, minLat, maxLon, maxLat, centerZoom, centerLon, centerLat } = header
 
-                if (tileJSON.bounds && tileJSON.minZoom && tileJSON.m)
-                    this.tileBounds = new TileBounds(
-                        tileJSON.bounds,
-                        this.minzoom,
-                        this.maxzoom
-                    );
+            // if (minZoom != null && maxZoom != null && minLon != null && minLat != null && maxLon != null && maxLat != null) {
+            //     this.tileBounds = new TileBounds(
+            //         [minLon, minLat, maxLon, maxLat],
+            //         minZoom,
+            //         maxZoom
+            //     );
+            //     this.minzoom = minZoom
+            //     this.maxzoom = maxZoom
 
-                if (this.maxzoom == undefined) {
-                    console.warn('The maxzoom parameter is not defined in the source json. This can cause memory leak. So make sure to define maxzoom in the layer')
-                }
-                this.type = 'vector'; // to avoid overwriting 
-                // `content` is included here to prevent a race condition where `Style#updateSources` is called
-                // before the TileJSON arrives. this makes sure the tiles needed are loaded once TileJSON arrives
-                // ref: https://github.com/mapbox/mapbox-gl-js/pull/4347#discussion_r104418088
-                this.fire(
-                    new Event("data", { dataType: "source", sourceDataType: "metadata" })
-                );
-                this.fire(
-                    new Event("data", { dataType: "source", sourceDataType: "content" })
-                );
-            })
+            //     this.map.fitBounds([minLon, minLat, maxLon, maxLat], { maxZoom: centerZoom });
+            // }
+
+            if (this.maxzoom == undefined) {
+                console.warn('The maxzoom parameter is not defined in the source json. This can cause memory leak. So make sure to define maxzoom in the layer')
+            }
+            this.tileType = tileType
+
+            return this._instance.getMetadata()
+        }).then((tileJSON: any) => {
+            this._tileJSONRequest = undefined;
+            this._loaded = true;
+
+            extend(this, tileJSON);
+            // to avoid overwriting 
+            if ([TileType.Jpeg, TileType.Png].includes(this.tileType)) {
+                this.loadTile = this.loadRasterTile
+                this.type = 'raster';
+            } else if (this.tileType === TileType.Mvt) {
+                this.loadTile = this.loadVectorTile
+                this.type = 'vector';
+            } else {
+                this.fire(new ErrorEvent(new Error("Unsupported Tile Type")));
+            }
+
+
+            // `content` is included here to prevent a race condition where `Style#updateSources` is called
+            // before the TileJSON arrives. this makes sure the tiles needed are loaded once TileJSON arrives
+            // ref: https://github.com/mapbox/mapbox-gl-js/pull/4347#discussion_r104418088
+            this.fire(
+                new Event("data", { dataType: "source", sourceDataType: "metadata" })
+            );
+            this.fire(
+                new Event("data", { dataType: "source", sourceDataType: "content" })
+            );
+        })
             .catch((err: any) => {
                 this.fire(new ErrorEvent(err));
                 if (callback) callback(err);
@@ -240,7 +282,7 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
     loaded(): boolean {
         return this._loaded;
     }
-    loadTile(tile: Tile, callback: Callback<void>) {
+    loadVectorTile(tile: Tile, callback: Callback<void>) {
         const done = (err: Error | null | undefined, data?: any) => {
             delete tile.request;
 
@@ -261,7 +303,7 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
             callback(null);
 
             if (tile.reloadCallback) {
-                this.loadTile(tile, tile.reloadCallback);
+                this.loadVectorTile(tile, tile.reloadCallback);
                 tile.reloadCallback = null;
             }
         }
@@ -291,26 +333,22 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
         };
         // params.request.collectResourceTiming = this._collectResourceTiming;
 
-        const afterLoad = (error:any, data:any, cacheControl:any, expires:any) => {
+        const afterLoad = (error: any, data: any, cacheControl: any, expires: any) => {
             if (error || !data) {
                 done.call(this, error);
                 return
             }
-            if (data.length == 0) {
-                done.call(this, new Error("zero size data"));
-                return
-            }
+            // if (data.length == 0) {
+            //     done.call(this, new Error("zero size data"));
+            //     return
+            // }
             params.data = {
                 cacheControl: cacheControl,
                 expires: expires,
                 rawData: data,
             };
             // // the worker will skip the network request if the data is already there
-            // params.data = {
-            //     cacheControl: data.cacheControl,
-            //     expires: data.expires,
-            //     rawData: data.rawData.slice(0),
-            // };
+            if (this.map._refreshExpiredTiles) tile.setExpiryData({ cacheControl, expires });
             if (tile.actor)
                 tile.actor.send(
                     "loadTile",
@@ -319,17 +357,12 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
                     undefined,
                     true
                 );
-
-
         };
 
-        if (tile.tileZoom < this.minzoom || tile.tileZoom >= this.maxzoom - 1) {
-            return callback({ status: 404 } as any);
-        }
         if (!tile.actor || tile.state === "expired") {
             tile.actor = this._tileWorkers[url] = this._tileWorkers[url] || this.dispatcher.getActor();
 
-            tile.request = this._protocol.tile({ ...tile, url }, afterLoad);
+            tile.request = this._protocol.tile({ ...request }, afterLoad);
             // always load tiles on the main thread and pass the result instead of requesting a worker to do so
 
         } else if (tile.state === "loading") {
@@ -340,6 +373,64 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
             tile.request = this._protocol.tile({ ...tile, url }, afterLoad);
         }
         console.log(url)
+    }
+
+    loadRasterTileData(tile: Tile, data: any): void {
+        tile.setTexture(data, this.map.painter);
+    }
+
+    loadRasterTile(tile: Tile, callback: Callback<void>) {
+        const done = ({ data, cacheControl, expires }) => {
+            delete tile.request;
+
+            if (tile.aborted) return callback(null);
+
+            // If the implementation returned `null` as tile data,
+            // mark the tile as `loaded` and use an an empty image as tile data.
+            // A map will render nothing in the tile’s space.
+            if (data === null || data === undefined) {
+                const emptyImage = { width: this.tileSize, height: this.tileSize, data: null };
+                this.loadRasterTileData(tile, (emptyImage as any));
+                tile.state = 'loaded';
+                return callback(null);
+            }
+
+            if (data && data.resourceTiming)
+                tile.resourceTiming = data.resourceTiming;
+
+            if (this.map._refreshExpiredTiles) tile.setExpiryData({ cacheControl, expires });
+
+            const blob = new window.Blob([new Uint8Array(data)], { type: 'image/png' });
+            window.createImageBitmap(blob).then((imageBitmap) => {
+                this.loadRasterTileData(tile, imageBitmap);
+                tile.state = 'loaded';
+                callback(null);
+            }).catch((error) => {
+                tile.state = 'errored';
+                return callback(new Error(`Can't infer data type for ${this.id}, only raster data supported at the moment. ${error}`));
+            })
+
+        }
+
+        const url = this.map?._requestManager.normalizeTileURL(
+            tile.tileID.canonical.url(this.tiles, this.scheme)
+        );
+        const request = this.map?._requestManager.transformRequest(url, "Tile");
+
+        const params = {
+            ...request,
+
+        };
+        const controller = new AbortController();
+        tile.request = { cancel: () => controller.abort() };
+        this._protocol.tile(params, controller).then(done.bind(this))
+            .catch(error => {
+                // silence AbortError
+                if (error.code === 20) return;
+                tile.state = 'errored';
+                callback(error);
+            });
+
     }
 }
 export default PmTilesSource;
