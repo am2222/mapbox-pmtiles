@@ -380,7 +380,7 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
     }
 
     loadRasterTile(tile: Tile, callback: Callback<void>) {
-        const done = ({ data, cacheControl, expires }) => {
+        const done = ({ data, cacheControl, expires }:any) => {
             delete tile.request;
 
             if (tile.aborted) return callback(null);
