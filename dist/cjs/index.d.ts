@@ -1,5 +1,5 @@
 import mapboxgl from "mapbox-gl";
-import { PMTiles, Protocol } from "pmtiles";
+import { PMTiles, Protocol, TileType } from "pmtiles";
 export declare const SOURCE_TYPE = "pmtile-source";
 declare class TileBounds {
     bounds: mapboxgl.LngLatBounds;
@@ -19,6 +19,7 @@ type PmTilesOptions = {
     url: string;
 };
 type Tile = {
+    setTexture(arg0: (data: any) => any, painter: any): unknown;
     request: any;
     aborted: any;
     resourceTiming: any;
@@ -70,10 +71,16 @@ export declare const PmTilesSource: {
         _instance: PMTiles;
         _collectResourceTiming: boolean;
         _tileJSONRequest: Promise<any> | undefined;
+        loadTile: (tile: Tile, callback: Callback<void>) => void;
+        tileType: TileType;
+        header: any;
+        zoomToExtent(): void;
         hasTile(tileID: TileID): boolean;
         load(callback?: Callback<void>): void;
         loaded(): boolean;
-        loadTile(tile: Tile, callback: Callback<void>): void;
+        loadVectorTile(tile: Tile, callback: Callback<void>): void;
+        loadRasterTileData(tile: Tile, data: any): void;
+        loadRasterTile(tile: Tile, callback: Callback<void>): void;
     };
     SOURCE_TYPE: string;
     getMetadata(url: string): Promise<any>;
