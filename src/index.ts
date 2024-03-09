@@ -8,15 +8,6 @@ export const SOURCE_TYPE = "pmtile-source";
 
 
 
-type RasterDataType = 'raster';
-type VectorDataType = 'vector';
-
-const isRaster = (data: any): boolean => {
-    return data instanceof ImageData ||
-        data instanceof HTMLCanvasElement ||
-        data instanceof ImageBitmap ||
-        data instanceof HTMLImageElement;
-}
 const extend = (dest: any, ...sources: any): any => {
     for (const src of sources) {
         for (const k in src) {
@@ -101,8 +92,13 @@ type MapboxMap = mapboxgl.Map & {
     _requestManager: any,
     painter: any
 }
-
+/**
+ * Pmtiles Options
+ */
 type PmTilesOptions = {
+    /**
+     * The pmtile url
+     */
     url: string
 }
 
@@ -169,6 +165,7 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
     loadTile!: (tile: Tile, callback: Callback<void>) => void;
     tileType!: TileType;
     header: any;
+    contentType!: string;
 
     static async getMetadata(url: string): Promise<any> {
         const instance = new PMTiles(url);
@@ -223,36 +220,50 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
     load(callback?: Callback<void>) {
         this._loaded = false;
         this.fire(new Event("dataloading", { dataType: "source" }));
-
-        this._tileJSONRequest = this._instance.getHeader().then((header: any) => {
+        // We need to get both header and metadata 
+        this._tileJSONRequest = Promise.all([this._instance.getHeader(), this._instance.getMetadata()]).then(([header, tileJSON]: any) => {
 
             this.header = header;
             const { specVersion, clustered, tileType, minZoom, maxZoom, minLon, minLat, maxLon, maxLat, centerZoom, centerLon, centerLat } = header
 
-            // if (minZoom != null && maxZoom != null && minLon != null && minLat != null && maxLon != null && maxLat != null) {
-            //     this.tileBounds = new TileBounds(
-            //         [minLon, minLat, maxLon, maxLat],
-            //         minZoom,
-            //         maxZoom
-            //     );
-            //     this.minzoom = minZoom
-            //     this.maxzoom = maxZoom
+            if (minZoom != null && maxZoom != null && minLon != null && minLat != null && maxLon != null && maxLat != null) {
+                this.tileBounds = new TileBounds(
+                    [minLon, minLat, maxLon, maxLat],
+                    minZoom,
+                    maxZoom
+                );
+                this.minzoom = minZoom
+                this.maxzoom = maxZoom
 
-            //     this.map.fitBounds([minLon, minLat, maxLon, maxLat], { maxZoom: centerZoom });
-            // }
+                // this.map.fitBounds([minLon, minLat, maxLon, maxLat], { maxZoom: centerZoom });
+            }
 
             if (this.maxzoom == undefined) {
                 console.warn('The maxzoom parameter is not defined in the source json. This can cause memory leak. So make sure to define maxzoom in the layer')
             }
-            this.tileType = tileType
 
-            return this._instance.getMetadata()
-        }).then((tileJSON: any) => {
             this._tileJSONRequest = undefined;
             this._loaded = true;
 
             extend(this, tileJSON);
-            // to avoid overwriting 
+            // we set this.type after extend to avoid overwriting 
+            this.tileType = tileType
+
+            switch (tileType) {
+                case TileType.Png:
+                    this.contentType = 'image/png';
+                    break;
+                case TileType.Jpeg:
+                    this.contentType = 'image/jpeg';
+                    break;
+                case TileType.Webp:
+                    this.contentType = 'image/webp';
+                    break;
+                case TileType.Avif:
+                    this.contentType = 'image/avif';
+                    break;
+            }
+
             if ([TileType.Jpeg, TileType.Png].includes(this.tileType)) {
                 this.loadTile = this.loadRasterTile
                 this.type = 'raster';
@@ -263,7 +274,6 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
                 this.fire(new ErrorEvent(new Error("Unsupported Tile Type")));
             }
 
-
             // `content` is included here to prevent a race condition where `Style#updateSources` is called
             // before the TileJSON arrives. this makes sure the tiles needed are loaded once TileJSON arrives
             // ref: https://github.com/mapbox/mapbox-gl-js/pull/4347#discussion_r104418088
@@ -273,11 +283,10 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
             this.fire(
                 new Event("data", { dataType: "source", sourceDataType: "content" })
             );
-        })
-            .catch((err: any) => {
-                this.fire(new ErrorEvent(err));
-                if (callback) callback(err);
-            });
+        }).catch((err: any) => {
+            this.fire(new ErrorEvent(err));
+            if (callback) callback(err);
+        });
     }
     loaded(): boolean {
         return this._loaded;
@@ -380,7 +389,7 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
     }
 
     loadRasterTile(tile: Tile, callback: Callback<void>) {
-        const done = ({ data, cacheControl, expires }:any) => {
+        const done = ({ data, cacheControl, expires }: any) => {
             delete tile.request;
 
             if (tile.aborted) return callback(null);
@@ -399,6 +408,7 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
                 tile.resourceTiming = data.resourceTiming;
 
             if (this.map._refreshExpiredTiles) tile.setExpiryData({ cacheControl, expires });
+
 
             const blob = new window.Blob([new Uint8Array(data)], { type: 'image/png' });
             window.createImageBitmap(blob).then((imageBitmap) => {
