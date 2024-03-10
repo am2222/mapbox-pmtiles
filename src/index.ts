@@ -439,13 +439,9 @@ export class PmTilesSource extends VectorTileSourceImpl {
         );
         const request = this.map?._requestManager.transformRequest(url, "Tile");
 
-        const params = {
-            ...request,
-
-        };
         const controller = new AbortController();
         tile.request = { cancel: () => controller.abort() };
-        this._protocol.tile(params, controller).then(done.bind(this))
+        this._protocol.tile(request, controller).then(done.bind(this))
             .catch(error => {
                 // silence AbortError
                 if (error.code === 20) return;
