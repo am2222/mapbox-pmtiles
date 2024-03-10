@@ -51,7 +51,7 @@ type TileID = {
  * The main pmtile custom source
  * @param args
  */
-export default class PmTilesSource extends VectorTileSourceImpl {
+export declare class PmTilesSource extends VectorTileSourceImpl {
     static SOURCE_TYPE: string;
     id: string;
     scheme: string;
@@ -105,5 +105,5 @@ export default class PmTilesSource extends VectorTileSourceImpl {
     loadRasterTileData(tile: Tile, data: any): void;
     loadRasterTile(tile: Tile, callback: Callback<void>): void;
 }
-export {};
+export default PmTilesSource;
 //# sourceMappingURL=index.d.ts.map
