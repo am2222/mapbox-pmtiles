@@ -11,8 +11,7 @@
     "publish:major": "npm version major",
     "preversion": "npm ci && npm run test",
     "version": "npm run tsc && git add -A dist",
-    "postversion": "echo postversion",
-    "docs": "jsdoc-to-mdx -c docs-config.json"
+    "postversion": "echo postversion"
   },
   "author": {
     "name": "Majid Hojati",
