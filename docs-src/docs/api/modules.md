@@ -18,4 +18,4 @@ custom_edit_url: null
 
 #### Defined in
 
-[index.ts:8](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L8)
+[index.ts:8](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L8)

@@ -38,7 +38,7 @@ VectorTileSourceImpl.constructor
 
 #### Defined in
 
-[index.ts:187](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L187)
+[index.ts:187](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L187)
 
 ## Properties
 
@@ -48,7 +48,7 @@ VectorTileSourceImpl.constructor
 
 #### Defined in
 
-[index.ts:166](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L166)
+[index.ts:166](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L166)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[index.ts:162](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L162)
+[index.ts:162](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L162)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[index.ts:163](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L163)
+[index.ts:163](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L163)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[index.ts:165](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L165)
+[index.ts:165](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L165)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[index.ts:160](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L160)
+[index.ts:160](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L160)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[index.ts:164](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L164)
+[index.ts:164](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L164)
 
 ___
 
@@ -108,7 +108,7 @@ ___
 
 #### Defined in
 
-[index.ts:167](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L167)
+[index.ts:167](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L167)
 
 ___
 
@@ -122,7 +122,7 @@ ___
 
 #### Defined in
 
-[index.ts:161](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L161)
+[index.ts:161](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L161)
 
 ___
 
@@ -132,7 +132,7 @@ ___
 
 #### Defined in
 
-[index.ts:143](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L143)
+[index.ts:143](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L143)
 
 ___
 
@@ -142,7 +142,7 @@ ___
 
 #### Defined in
 
-[index.ts:171](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L171)
+[index.ts:171](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L171)
 
 ___
 
@@ -152,7 +152,7 @@ ___
 
 #### Defined in
 
-[index.ts:155](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L155)
+[index.ts:155](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L155)
 
 ___
 
@@ -162,7 +162,7 @@ ___
 
 #### Defined in
 
-[index.ts:153](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L153)
+[index.ts:153](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L153)
 
 ___
 
@@ -172,7 +172,7 @@ ___
 
 #### Defined in
 
-[index.ts:170](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L170)
+[index.ts:170](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L170)
 
 ___
 
@@ -182,7 +182,7 @@ ___
 
 #### Defined in
 
-[index.ts:138](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L138)
+[index.ts:138](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L138)
 
 ___
 
@@ -207,7 +207,7 @@ ___
 
 #### Defined in
 
-[index.ts:168](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L168)
+[index.ts:168](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L168)
 
 ___
 
@@ -217,7 +217,7 @@ ___
 
 #### Defined in
 
-[index.ts:145](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L145)
+[index.ts:145](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L145)
 
 ___
 
@@ -227,7 +227,7 @@ ___
 
 #### Defined in
 
-[index.ts:150](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L150)
+[index.ts:150](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L150)
 
 ___
 
@@ -237,7 +237,7 @@ ___
 
 #### Defined in
 
-[index.ts:141](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L141)
+[index.ts:141](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L141)
 
 ___
 
@@ -247,7 +247,7 @@ ___
 
 #### Defined in
 
-[index.ts:149](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L149)
+[index.ts:149](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L149)
 
 ___
 
@@ -257,7 +257,7 @@ ___
 
 #### Defined in
 
-[index.ts:140](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L140)
+[index.ts:140](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L140)
 
 ___
 
@@ -267,7 +267,7 @@ ___
 
 #### Defined in
 
-[index.ts:151](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L151)
+[index.ts:151](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L151)
 
 ___
 
@@ -277,7 +277,7 @@ ___
 
 #### Defined in
 
-[index.ts:156](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L156)
+[index.ts:156](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L156)
 
 ___
 
@@ -287,7 +287,7 @@ ___
 
 #### Defined in
 
-[index.ts:147](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L147)
+[index.ts:147](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L147)
 
 ___
 
@@ -297,7 +297,7 @@ ___
 
 #### Defined in
 
-[index.ts:139](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L139)
+[index.ts:139](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L139)
 
 ___
 
@@ -307,7 +307,7 @@ ___
 
 #### Defined in
 
-[index.ts:154](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L154)
+[index.ts:154](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L154)
 
 ___
 
@@ -317,7 +317,7 @@ ___
 
 #### Defined in
 
-[index.ts:157](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L157)
+[index.ts:157](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L157)
 
 ___
 
@@ -327,7 +327,7 @@ ___
 
 #### Defined in
 
-[index.ts:148](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L148)
+[index.ts:148](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L148)
 
 ___
 
@@ -337,7 +337,7 @@ ___
 
 #### Defined in
 
-[index.ts:142](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L142)
+[index.ts:142](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L142)
 
 ___
 
@@ -347,7 +347,7 @@ ___
 
 #### Defined in
 
-[index.ts:169](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L169)
+[index.ts:169](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L169)
 
 ___
 
@@ -357,7 +357,7 @@ ___
 
 #### Defined in
 
-[index.ts:144](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L144)
+[index.ts:144](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L144)
 
 ___
 
@@ -367,7 +367,7 @@ ___
 
 #### Defined in
 
-[index.ts:152](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L152)
+[index.ts:152](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L152)
 
 ___
 
@@ -377,7 +377,7 @@ ___
 
 #### Defined in
 
-[index.ts:136](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L136)
+[index.ts:136](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L136)
 
 ## Methods
 
@@ -397,7 +397,7 @@ ___
 
 #### Defined in
 
-[index.ts:229](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L229)
+[index.ts:229](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L229)
 
 ___
 
@@ -417,7 +417,7 @@ ___
 
 #### Defined in
 
-[index.ts:232](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L232)
+[index.ts:232](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L232)
 
 ___
 
@@ -438,7 +438,7 @@ ___
 
 #### Defined in
 
-[index.ts:403](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L403)
+[index.ts:403](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L403)
 
 ___
 
@@ -459,7 +459,7 @@ ___
 
 #### Defined in
 
-[index.ts:399](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L399)
+[index.ts:399](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L399)
 
 ___
 
@@ -480,7 +480,7 @@ ___
 
 #### Defined in
 
-[index.ts:306](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L306)
+[index.ts:306](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L306)
 
 ___
 
@@ -494,7 +494,7 @@ ___
 
 #### Defined in
 
-[index.ts:303](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L303)
+[index.ts:303](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L303)
 
 ___
 
@@ -508,7 +508,7 @@ ___
 
 #### Defined in
 
-[index.ts:219](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L219)
+[index.ts:219](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L219)
 
 ___
 
@@ -530,4 +530,4 @@ A Json object of the PmTile's metadata
 
 #### Defined in
 
-[index.ts:178](https://github.com/am2222/mapbox-pmtiles/blob/4d3582c/src/index.ts#L178)
+[index.ts:178](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L178)
