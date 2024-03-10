@@ -1,3 +1,11 @@
+---
+id: "index"
+title: "mapbox-pmtiles"
+sidebar_label: "Readme"
+sidebar_position: 0
+custom_edit_url: null
+---
+
 # Mapbox-PmTiles
 
 [![NPM Build](https://github.com/am2222/mapbox-pmtiles/actions/workflows/build.yml/badge.svg)](https://github.com/am2222/mapbox-pmtiles/actions/workflows/build.yml) [![](https://data.jsdelivr.com/v1/package/npm/mapbox-pmtiles/badge)](https://www.jsdelivr.com/package/npm/mapbox-pmtiles)
@@ -49,8 +57,4 @@ map.on("load", () => {
 import mapboxPmtiles from 'https://cdn.jsdelivr.net/npm/mapbox-pmtiles/+esm'
 </script>
 
-
 ```
-
-
-
