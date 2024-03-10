@@ -1,5 +1,5 @@
 import mapboxgl from "mapbox-gl";
-import { PMTiles, Protocol } from "pmtiles";
+import { PMTiles, Protocol, TileType } from "pmtiles";
 export declare const SOURCE_TYPE = "pmtile-source";
 declare class TileBounds {
     bounds: mapboxgl.LngLatBounds;
@@ -15,10 +15,17 @@ type MapboxMap = mapboxgl.Map & {
     _requestManager: any;
     painter: any;
 };
+/**
+ * Pmtiles Options
+ */
 type PmTilesOptions = {
+    /**
+     * The pmtile url
+     */
     url: string;
 };
 type Tile = {
+    setTexture(arg0: (data: any) => any, painter: any): unknown;
     request: any;
     aborted: any;
     resourceTiming: any;
@@ -70,12 +77,24 @@ export declare const PmTilesSource: {
         _instance: PMTiles;
         _collectResourceTiming: boolean;
         _tileJSONRequest: Promise<any> | undefined;
+        loadTile: (tile: Tile, callback: Callback<void>) => void;
+        tileType: TileType;
+        header: any;
+        contentType: string;
+        zoomToExtent(): void;
         hasTile(tileID: TileID): boolean;
         load(callback?: Callback<void>): void;
         loaded(): boolean;
-        loadTile(tile: Tile, callback: Callback<void>): void;
+        loadVectorTile(tile: Tile, callback: Callback<void>): void;
+        loadRasterTileData(tile: Tile, data: any): void;
+        loadRasterTile(tile: Tile, callback: Callback<void>): void;
     };
     SOURCE_TYPE: string;
+    /**
+     *
+     * @param url The pmTiles URL
+     * @returns A Json object of the PmTile's metadata
+     */
     getMetadata(url: string): Promise<any>;
 };
 export default PmTilesSource;

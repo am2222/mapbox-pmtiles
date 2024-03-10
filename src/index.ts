@@ -4,9 +4,8 @@ import { PMTiles, Protocol, TileType } from "pmtiles";
 
 // @ts-expect-error
 const VectorTileSourceImpl = mapboxgl.Style.getSourceType("vector");
+
 export const SOURCE_TYPE = "pmtile-source";
-
-
 
 const extend = (dest: any, ...sources: any): any => {
     for (const src of sources) {
@@ -129,7 +128,11 @@ type TileID = {
     canonical: TileID;
 
 }
-export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl {
+/**
+ * The main pmtile custom source
+ * @param args 
+ */
+export default class PmTilesSource extends VectorTileSourceImpl {
     static SOURCE_TYPE = SOURCE_TYPE
 
     id: string;
@@ -167,12 +170,21 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
     header: any;
     contentType!: string;
 
+    /**
+     * 
+     * @param url The pmTiles URL
+     * @returns A Json object of the PmTile's metadata
+     */
     static async getMetadata(url: string): Promise<any> {
         const instance = new PMTiles(url);
         return instance.getMetadata()
     }
 
-    constructor(...args: [string, PmTilesOptions, any, any]) {
+    /**
+     * 
+     * @param args 
+     */
+    constructor(...args: [id:string, implementation:PmTilesOptions, dispatcher:any, eventedParent:any]) {
         super(...args);
         const [id, implementation, dispatcher, eventedParent] = args
         this.id = id;
@@ -443,4 +455,3 @@ export const PmTilesSource = class PmTileSourceImpl extends VectorTileSourceImpl
 
     }
 }
-export default PmTilesSource;
