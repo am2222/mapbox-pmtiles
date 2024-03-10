@@ -163,7 +163,6 @@ export class PmTilesSource extends VectorTileSourceImpl {
     _implementation;
     _protocol: Protocol;
     _instance: PMTiles;
-    _collectResourceTiming: boolean = false;
     _tileJSONRequest: Promise<any> | undefined;
     loadTile!: (tile: Tile, callback: Callback<void>) => void;
     tileType!: TileType;
@@ -319,8 +318,6 @@ export class PmTilesSource extends VectorTileSourceImpl {
             if (this.map?._refreshExpiredTiles && data) tile.setExpiryData(data);
             tile.loadVectorData(data, this.map?.painter);
 
-            // cacheEntryPossiblyAdded(this.dispatcher);
-
             callback(null);
 
             if (tile.reloadCallback) {
@@ -352,17 +349,13 @@ export class PmTilesSource extends VectorTileSourceImpl {
             // brightness: this.map.style ? (this.map.style.getBrightness() || 0.0) : 0.0,
             extraShadowCaster: tile.isExtraShadowCaster,
         };
-        // params.request.collectResourceTiming = this._collectResourceTiming;
 
         const afterLoad = (error: any, data: any, cacheControl: any, expires: any) => {
             if (error || !data) {
                 done.call(this, error);
                 return
             }
-            // if (data.length == 0) {
-            //     done.call(this, new Error("zero size data"));
-            //     return
-            // }
+
             params.data = {
                 cacheControl: cacheControl,
                 expires: expires,
@@ -385,15 +378,12 @@ export class PmTilesSource extends VectorTileSourceImpl {
 
             tile.request = this._protocol.tile({ ...request }, afterLoad);
             // always load tiles on the main thread and pass the result instead of requesting a worker to do so
-
         } else if (tile.state === "loading") {
             // schedule tile reloading after it has been loaded
             tile.reloadCallback = callback;
         } else {
-            debugger
             tile.request = this._protocol.tile({ ...tile, url }, afterLoad);
         }
-        console.log(url)
     }
 
     loadRasterTileData(tile: Tile, data: any): void {
