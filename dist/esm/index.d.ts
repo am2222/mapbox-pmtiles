@@ -15,13 +15,7 @@ type MapboxMap = mapboxgl.Map & {
     _requestManager: any;
     painter: any;
 };
-/**
- * Pmtiles Options
- */
 type PmTilesOptions = {
-    /**
-     * The pmtile url
-     */
     url: string;
 };
 type Tile = {
@@ -80,7 +74,6 @@ export declare const PmTilesSource: {
         loadTile: (tile: Tile, callback: Callback<void>) => void;
         tileType: TileType;
         header: any;
-        contentType: string;
         zoomToExtent(): void;
         hasTile(tileID: TileID): boolean;
         load(callback?: Callback<void>): void;
@@ -90,11 +83,6 @@ export declare const PmTilesSource: {
         loadRasterTile(tile: Tile, callback: Callback<void>): void;
     };
     SOURCE_TYPE: string;
-    /**
-     *
-     * @param url The pmTiles URL
-     * @returns A Json object of the PmTile's metadata
-     */
     getMetadata(url: string): Promise<any>;
 };
 export default PmTilesSource;

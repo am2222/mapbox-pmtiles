@@ -80,7 +80,6 @@ export declare const PmTilesSource: {
         loadTile: (tile: Tile, callback: Callback<void>) => void;
         tileType: TileType;
         header: any;
-        contentType: string;
         zoomToExtent(): void;
         hasTile(tileID: TileID): boolean;
         load(callback?: Callback<void>): void;
