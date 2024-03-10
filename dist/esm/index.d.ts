@@ -80,7 +80,6 @@ export declare class PmTilesSource extends VectorTileSourceImpl {
     _implementation: PmTilesOptions;
     _protocol: Protocol;
     _instance: PMTiles;
-    _collectResourceTiming: boolean;
     _tileJSONRequest: Promise<any> | undefined;
     loadTile: (tile: Tile, callback: Callback<void>) => void;
     tileType: TileType;
