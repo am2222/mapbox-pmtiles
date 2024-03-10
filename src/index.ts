@@ -132,7 +132,7 @@ type TileID = {
  * The main pmtile custom source
  * @param args 
  */
-export default class PmTilesSource extends VectorTileSourceImpl {
+export class PmTilesSource extends VectorTileSourceImpl {
     static SOURCE_TYPE = SOURCE_TYPE
 
     id: string;
@@ -455,3 +455,5 @@ export default class PmTilesSource extends VectorTileSourceImpl {
 
     }
 }
+
+export default PmTilesSource
