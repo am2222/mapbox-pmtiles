@@ -65,7 +65,7 @@ jobs:
       - name: Install dependencies
         run: cd docs-src && yarn install --frozen-lockfile
       - name: Build docs
-        run: yarn build
+        run:  cd docs-src && yarn build
 
       # Popular action to deploy to GitHub Pages:
       # Docs: https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-docusaurus
