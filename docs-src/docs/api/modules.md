@@ -8,7 +8,13 @@ custom_edit_url: null
 
 ## Classes
 
-- [default](classes/default.md)
+- [PmTilesSource](classes/PmTilesSource.md)
+
+## References
+
+### default
+
+Renames and re-exports [PmTilesSource](classes/PmTilesSource.md)
 
 ## Variables
 
@@ -18,4 +24,4 @@ custom_edit_url: null
 
 #### Defined in
 
-[index.ts:8](https://github.com/am2222/mapbox-pmtiles/blob/5e36f8c/src/index.ts#L8)
+[index.ts:8](https://github.com/am2222/mapbox-pmtiles/blob/ca13edb/src/index.ts#L8)

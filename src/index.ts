@@ -183,7 +183,7 @@ export class PmTilesSource extends VectorTileSourceImpl {
      * 
      * @param args 
      */
-    constructor(...args: [id:string, implementation:PmTilesOptions, dispatcher:any, eventedParent:any]) {
+    constructor(...args: [id: string, implementation: PmTilesOptions, dispatcher: any, eventedParent: any]) {
         super(...args);
         const [id, implementation, dispatcher, eventedParent] = args
         this.id = id;
@@ -432,7 +432,7 @@ export class PmTilesSource extends VectorTileSourceImpl {
         const controller = new AbortController();
         tile.request = { cancel: () => controller.abort() };
         this._protocol.tile(request, controller).then(done.bind(this))
-            .catch(error => {
+            .catch((error: any) => {
                 // silence AbortError
                 if (error.code === 20) return;
                 tile.state = 'errored';

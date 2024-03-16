@@ -5,12 +5,12 @@
   "description": "A custom source to add PmTiles support to mapbox gl js",
   "scripts": {
     "test": "vitest",
-    "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json && esbuild dist/esm/index.js --minify --outfile=dist/mapbox-pmtiles.esm.min.js && esbuild dist/cjs/index.js --minify --outfile=dist/mapbox-pmtiles.cjs.min.js",
+    "build": "vite build",
     "publish:patch": "npm version patch",
     "publish:minor": "npm version minor",
     "publish:major": "npm version major",
     "preversion": "npm ci && npm run test",
-    "version": "npm run tsc && git add -A dist",
+    "version": "npm run build && git add -A dist",
     "postversion": "echo postversion"
   },
   "author": {
@@ -34,13 +34,11 @@
   "homepage": "https://github.com/am2222/mapbox-pmtiles",
   "devDependencies": {
     "docusaurus-plugin-typedoc": "^0.22.0",
-    "jsdoc-to-markdown": "^8.0.1",
-    "jsdoc-to-mdx": "^1.2.1",
-    "markdox": "^0.1.10",
+    "terser": "^5.29.2",
     "typedoc": "^0.25.11",
     "typedoc-plugin-markdown": "^3.17.1",
     "typescript": "^5.3.3",
-    "vite": "^5.1.4",
+    "vite": "^5.1.6",
     "vitest": "^1.3.1"
   },
   "main": "./src/index.ts",
@@ -53,5 +51,7 @@
     "mapbox-gl": "^3.1.2",
     "pmtiles": "^3.0.3"
   },
-  "jsdelivr": "dist/mapbox-pmtiles.esm.js"
+  "jsdelivr": "dist/mapbox-pmtiles.umd.cjs",
+  "browser": "dist/mapbox-pmtiles.umd.cjs"
+
 }

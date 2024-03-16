@@ -46,13 +46,6 @@ const config = {
           editUrl:
             "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
         },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
-        },
         theme: {
           customCss: "./src/css/custom.css",
         },
@@ -73,12 +66,17 @@ const config = {
         },
         items: [
           {
+            label: "Map",
+            to: "pathname:///html/map.html",
+            position: "left",
+          },
+          {
             type: "docSidebar",
             sidebarId: "tutorialSidebar",
             position: "left",
             label: "API",
           },
-          // {to: '/map.html', label: 'Demo', position: 'left'},
+        
           {
             href: "https://github.com/am2222/mapbox-pmtiles",
             label: "GitHub",
@@ -102,8 +100,12 @@ const config = {
             title: "More",
             items: [
               {
+                label: "Map",
+                to: "pathname:///html/map.html",
+              },
+              {
                 label: "Demo",
-                to: "./img/demo.html",
+                to: "pathname:///html/demo.html",
               },
               {
                 label: "GitHub",
@@ -119,17 +121,17 @@ const config = {
         darkTheme: prismThemes.dracula,
       },
     }),
-    plugins: [
-      [
-        'docusaurus-plugin-typedoc',
-  
-        // Plugin / TypeDoc options
-        {
-          entryPoints: ['../src/index.ts'],
-          tsconfig: '../tsconfig.json',
-        },
-      ],
+  plugins: [
+    [
+      "docusaurus-plugin-typedoc",
+
+      // Plugin / TypeDoc options
+      {
+        entryPoints: ["../src/index.ts"],
+        tsconfig: "../tsconfig.json",
+      },
     ],
+  ],
 };
 
 export default config;
