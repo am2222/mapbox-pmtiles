@@ -58,3 +58,6 @@ import mapboxPmtiles from 'https://cdn.jsdelivr.net/npm/mapbox-pmtiles/+esm'
 </script>
 
 ```
+
+## What is PmTiles
+See the [PmTiles](https://docs.protomaps.com/pmtiles/) repository for more information
