@@ -3,10 +3,12 @@
 <head>
 <meta charset="utf-8">
 <title>Display a map on a webpage</title>
+
 <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mapbox-pmtiles@1/dist/mapbox-pmtiles.umd.cjs"></script>
+<script type="text/javascript"  src="https://cdn.jsdelivr.net/npm/mapbox-pmtiles@1/dist/mapbox-pmtiles.umd.js"></script>
+
 <style>
 body { margin: 0; padding: 0; }
 #map { position: absolute; top: 0; bottom: 0; width: 100%; }
@@ -18,9 +20,10 @@ body { margin: 0; padding: 0; }
     const map = new mapboxgl.Map({
         container: 'map', // container ID
         center: [-74.5, 40], // starting position [lng, lat]
-        zoom: 9 // starting zoom
+        zoom: 9 ,// starting zoom,
+        accessToken:"pk.eyJ1IjoibWFqaWRob2phdGlyZWFkeSIsImEiOiJjbHJxbXZvZDEwMDJhMmtuMmx6NHEwYTV2In0.eLlTQdMMrimVg9NxacXFmg"
     });
-    mapboxgl.Style.setSourceType(PmTilesSource.SOURCE_TYPE, PmTilesSource);
+    mapboxgl.Style.setSourceType(mapboxPmTiles.SOURCE_TYPE, mapboxPmTiles.PmTilesSource);
 
     map.on("load", () => {
 
@@ -28,13 +31,13 @@ body { margin: 0; padding: 0; }
         "https://r2-public.protomaps.com/protomaps-sample-datasets/protomaps-basemap-opensource-20230408.pmtiles";
 
         map.addSource("pmTileSourceName", {
-        type: PmTilesSource.SOURCE_TYPE, //Add this line
+        type: mapboxPmTiles.SOURCE_TYPE, //Add this line
         url: PMTILES_URL,
         maxzoom: 10,
         });
 
-        map.current.showTileBoundaries = true;
-        map.current.addLayer({
+        map.showTileBoundaries = true;
+        map.addLayer({
             id: "places",
             source: "pmTileSourceName",
             "source-layer": "places",

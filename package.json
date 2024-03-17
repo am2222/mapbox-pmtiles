@@ -5,7 +5,7 @@
   "description": "A custom source to add PmTiles support to mapbox gl js",
   "scripts": {
     "test": "vitest",
-    "build": "vite build",
+    "build": "vite build && cp ./dist/mapbox-pmtiles.umd.cjs ./dist/mapbox-pmtiles.umd.js",
     "publish:patch": "npm version patch",
     "publish:minor": "npm version minor",
     "publish:major": "npm version major",
@@ -51,6 +51,6 @@
     "mapbox-gl": "^3.1.2",
     "pmtiles": "^3.0.3"
   },
-  "jsdelivr": "dist/mapbox-pmtiles.umd.cjs",
-  "browser": "dist/mapbox-pmtiles.umd.cjs"
+  "jsdelivr": "dist/mapbox-pmtiles.umd.js",
+  "browser": "dist/mapbox-pmtiles.umd.js"
 }

@@ -10,6 +10,7 @@ export default defineConfig({
       name: 'mapboxPmTiles',
       // the proper extensions will be added
       fileName: 'mapbox-pmtiles',
+      formats: ['cjs','es','iife','umd']
     },
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
