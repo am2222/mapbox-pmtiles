@@ -1,10 +1,21 @@
-# Mapbox-PmTiles
 
-[![NPM Build](https://github.com/am2222/mapbox-pmtiles/actions/workflows/build.yml/badge.svg)](https://github.com/am2222/mapbox-pmtiles/actions/workflows/build.yml) [![](https://data.jsdelivr.com/v1/package/npm/mapbox-pmtiles/badge)](https://www.jsdelivr.com/package/npm/mapbox-pmtiles)
 
+<div align="center">
+
+
+[![Documentations](https://github.com/am2222/mapbox-pmtiles/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/am2222/mapbox-pmtiles/actions/workflows/pages/pages-build-deployment) [![npm Package](https://github.com/am2222/mapbox-pmtiles/actions/workflows/build.yml/badge.svg)](https://www.npmjs.com/package/mapbox-pmtiles?activeTab=readme) [![](https://data.jsdelivr.com/v1/package/npm/mapbox-pmtiles/badge)](https://www.jsdelivr.com/package/npm/mapbox-pmtiles)
+
+
+</div>
+
+## Mapbox-PmTiles
 Add PmTiles support to mapbox
 
-# Usage
+
+
+
+
+## Usage
 
 ## ESM Module
 
