@@ -6,9 +6,61 @@ sidebar_position: 0
 custom_edit_url: null
 ---
 
-The main pmtile custom source
+The PmTiles source. It mainly should work as a regular source as other mapbox sources.
+
+**`Remarks`**
+
+The Source will automatically set its type [vector|raster] based on the type defined in the pmTiles metadata. The different PmTiles 
+data type is defined as here: [https://github.com/protomaps/PMTiles/blob/main/spec/v3/spec.md#tile-type-tt](https://github.com/protomaps/PMTiles/blob/main/spec/v3/spec.md#tile-type-tt). We also use the
+rest of the headers to set source boundary. This includes `minZoom`, `maxZoom`, `minLon`, `minLat`, `maxLon` and `maxLat`  if they are
+available.
 
 **`Param`**
+
+The unique id of the source
+
+**`Param`**
+
+The  main pmtiles options
+
+**`Param`**
+
+**`Param`**
+
+**`Example`**
+
+```js
+import mapboxgl from "mapbox-gl";
+
+import { PmTilesSource } from "mapbox-pmtiles";
+//Define custom source
+mapboxgl.Style.setSourceType(PmTilesSource.SOURCE_TYPE, PmTilesSource);
+
+map.on("load", () => {
+
+const PMTILES_URL =
+   "https://r2-public.protomaps.com/protomaps-sample-datasets/protomaps-basemap-opensource-20230408.pmtiles";
+
+    map.addSource("pmTileSourceName", {
+    type: PmTilesSource.SOURCE_TYPE, //Add this line
+    url: PMTILES_URL,
+    maxzoom: 10,
+    });
+
+    map.current.showTileBoundaries = true;
+    map.current.addLayer({
+        id: "places",
+        source: "pmTileSourceName",
+        "source-layer": "places",
+        type: "circle",
+        paint: {
+            "circle-color": "steelblue",
+        },
+        maxzoom: 14,
+    });
+});
+    
+```
 
 ## Hierarchy
 
@@ -20,17 +72,64 @@ The main pmtile custom source
 
 ### constructor
 
-• **new PmTilesSource**(`...args`): [`PmTilesSource`](PmTilesSource.md)
+• **new PmTilesSource**(`id`, `options`, `_dispatcher`, `_eventedParent`): [`PmTilesSource`](PmTilesSource.md)
+
+The PmTiles source. It mainly should work as a regular source as other mapbox sources.
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `...args` | [id: string, implementation: PmTilesOptions, dispatcher: any, eventedParent: any] |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | The unique id of the source |
+| `options` | `PmTilesOptions` | The main pmtiles options |
+| `_dispatcher` | `any` |  |
+| `_eventedParent` | `any` |  |
 
 #### Returns
 
 [`PmTilesSource`](PmTilesSource.md)
+
+**`Remarks`**
+
+The Source will automatically set its type [vector|raster] based on the type defined in the pmTiles metadata. The different PmTiles 
+data type is defined as here: [https://github.com/protomaps/PMTiles/blob/main/spec/v3/spec.md#tile-type-tt](https://github.com/protomaps/PMTiles/blob/main/spec/v3/spec.md#tile-type-tt). We also use the
+rest of the headers to set source boundary. This includes `minZoom`, `maxZoom`, `minLon`, `minLat`, `maxLon` and `maxLat`  if they are
+available.
+
+**`Example`**
+
+```js
+import mapboxgl from "mapbox-gl";
+
+import { PmTilesSource } from "mapbox-pmtiles";
+//Define custom source
+mapboxgl.Style.setSourceType(PmTilesSource.SOURCE_TYPE, PmTilesSource);
+
+map.on("load", () => {
+
+const PMTILES_URL =
+   "https://r2-public.protomaps.com/protomaps-sample-datasets/protomaps-basemap-opensource-20230408.pmtiles";
+
+    map.addSource("pmTileSourceName", {
+    type: PmTilesSource.SOURCE_TYPE, //Add this line
+    url: PMTILES_URL,
+    maxzoom: 10,
+    });
+
+    map.current.showTileBoundaries = true;
+    map.current.addLayer({
+        id: "places",
+        source: "pmTileSourceName",
+        "source-layer": "places",
+        type: "circle",
+        paint: {
+            "circle-color": "steelblue",
+        },
+        maxzoom: 14,
+    });
+});
+    
+```
 
 #### Overrides
 
@@ -38,7 +137,7 @@ VectorTileSourceImpl.constructor
 
 #### Defined in
 
-[index.ts:186](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L186)
+[index.ts:287](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L287)
 
 ## Properties
 
@@ -48,7 +147,7 @@ VectorTileSourceImpl.constructor
 
 #### Defined in
 
-[index.ts:162](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L162)
+[index.ts:210](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L210)
 
 ___
 
@@ -58,7 +157,7 @@ ___
 
 #### Defined in
 
-[index.ts:163](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L163)
+[index.ts:211](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L211)
 
 ___
 
@@ -68,7 +167,7 @@ ___
 
 #### Defined in
 
-[index.ts:165](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L165)
+[index.ts:213](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L213)
 
 ___
 
@@ -78,7 +177,7 @@ ___
 
 #### Defined in
 
-[index.ts:160](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L160)
+[index.ts:208](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L208)
 
 ___
 
@@ -88,7 +187,7 @@ ___
 
 #### Defined in
 
-[index.ts:164](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L164)
+[index.ts:212](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L212)
 
 ___
 
@@ -98,7 +197,7 @@ ___
 
 #### Defined in
 
-[index.ts:166](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L166)
+[index.ts:214](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L214)
 
 ___
 
@@ -112,7 +211,7 @@ ___
 
 #### Defined in
 
-[index.ts:161](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L161)
+[index.ts:209](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L209)
 
 ___
 
@@ -122,7 +221,7 @@ ___
 
 #### Defined in
 
-[index.ts:143](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L143)
+[index.ts:191](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L191)
 
 ___
 
@@ -132,7 +231,7 @@ ___
 
 #### Defined in
 
-[index.ts:170](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L170)
+[index.ts:218](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L218)
 
 ___
 
@@ -142,7 +241,7 @@ ___
 
 #### Defined in
 
-[index.ts:155](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L155)
+[index.ts:203](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L203)
 
 ___
 
@@ -152,7 +251,7 @@ ___
 
 #### Defined in
 
-[index.ts:153](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L153)
+[index.ts:201](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L201)
 
 ___
 
@@ -162,7 +261,7 @@ ___
 
 #### Defined in
 
-[index.ts:169](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L169)
+[index.ts:217](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L217)
 
 ___
 
@@ -172,7 +271,7 @@ ___
 
 #### Defined in
 
-[index.ts:138](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L138)
+[index.ts:186](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L186)
 
 ___
 
@@ -197,7 +296,7 @@ ___
 
 #### Defined in
 
-[index.ts:167](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L167)
+[index.ts:215](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L215)
 
 ___
 
@@ -207,7 +306,7 @@ ___
 
 #### Defined in
 
-[index.ts:145](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L145)
+[index.ts:193](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L193)
 
 ___
 
@@ -217,7 +316,7 @@ ___
 
 #### Defined in
 
-[index.ts:150](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L150)
+[index.ts:198](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L198)
 
 ___
 
@@ -227,7 +326,7 @@ ___
 
 #### Defined in
 
-[index.ts:141](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L141)
+[index.ts:189](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L189)
 
 ___
 
@@ -237,7 +336,7 @@ ___
 
 #### Defined in
 
-[index.ts:149](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L149)
+[index.ts:197](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L197)
 
 ___
 
@@ -247,7 +346,7 @@ ___
 
 #### Defined in
 
-[index.ts:140](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L140)
+[index.ts:188](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L188)
 
 ___
 
@@ -257,7 +356,7 @@ ___
 
 #### Defined in
 
-[index.ts:151](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L151)
+[index.ts:199](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L199)
 
 ___
 
@@ -267,7 +366,7 @@ ___
 
 #### Defined in
 
-[index.ts:156](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L156)
+[index.ts:204](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L204)
 
 ___
 
@@ -277,7 +376,7 @@ ___
 
 #### Defined in
 
-[index.ts:147](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L147)
+[index.ts:195](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L195)
 
 ___
 
@@ -287,7 +386,7 @@ ___
 
 #### Defined in
 
-[index.ts:139](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L139)
+[index.ts:187](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L187)
 
 ___
 
@@ -297,7 +396,7 @@ ___
 
 #### Defined in
 
-[index.ts:154](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L154)
+[index.ts:202](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L202)
 
 ___
 
@@ -307,7 +406,7 @@ ___
 
 #### Defined in
 
-[index.ts:157](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L157)
+[index.ts:205](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L205)
 
 ___
 
@@ -317,7 +416,7 @@ ___
 
 #### Defined in
 
-[index.ts:148](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L148)
+[index.ts:196](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L196)
 
 ___
 
@@ -327,7 +426,7 @@ ___
 
 #### Defined in
 
-[index.ts:142](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L142)
+[index.ts:190](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L190)
 
 ___
 
@@ -337,7 +436,7 @@ ___
 
 #### Defined in
 
-[index.ts:168](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L168)
+[index.ts:216](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L216)
 
 ___
 
@@ -347,7 +446,7 @@ ___
 
 #### Defined in
 
-[index.ts:144](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L144)
+[index.ts:192](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L192)
 
 ___
 
@@ -357,7 +456,7 @@ ___
 
 #### Defined in
 
-[index.ts:152](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L152)
+[index.ts:200](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L200)
 
 ___
 
@@ -367,9 +466,25 @@ ___
 
 #### Defined in
 
-[index.ts:136](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L136)
+[index.ts:184](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L184)
 
 ## Methods
+
+### getExtent
+
+▸ **getExtent**(): `LngLatBoundsLike`
+
+the extent of the entire source extracted from pmtiles header
+
+#### Returns
+
+`LngLatBoundsLike`
+
+#### Defined in
+
+[index.ts:324](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L324)
+
+___
 
 ### hasTile
 
@@ -387,7 +502,7 @@ ___
 
 #### Defined in
 
-[index.ts:228](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L228)
+[index.ts:330](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L330)
 
 ___
 
@@ -407,7 +522,7 @@ ___
 
 #### Defined in
 
-[index.ts:231](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L231)
+[index.ts:333](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L333)
 
 ___
 
@@ -428,7 +543,7 @@ ___
 
 #### Defined in
 
-[index.ts:393](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L393)
+[index.ts:497](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L497)
 
 ___
 
@@ -449,7 +564,7 @@ ___
 
 #### Defined in
 
-[index.ts:389](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L389)
+[index.ts:493](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L493)
 
 ___
 
@@ -470,7 +585,7 @@ ___
 
 #### Defined in
 
-[index.ts:305](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L305)
+[index.ts:409](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L409)
 
 ___
 
@@ -484,27 +599,39 @@ ___
 
 #### Defined in
 
-[index.ts:302](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L302)
+[index.ts:405](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L405)
 
 ___
 
-### zoomToExtent
+### getHeader
 
-▸ **zoomToExtent**(): `void`
+▸ **getHeader**(`url`): `Promise`\<`any`\>
+
+An static function to get the header of an pmtiles
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `url` | `string` | The pmTiles URL |
 
 #### Returns
 
-`void`
+`Promise`\<`any`\>
+
+A Json object of the PmTile's header
 
 #### Defined in
 
-[index.ts:218](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L218)
+[index.ts:236](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L236)
 
 ___
 
 ### getMetadata
 
 ▸ **getMetadata**(`url`): `Promise`\<`any`\>
+
+An static function to get the metadata of a pmtiles
 
 #### Parameters
 
@@ -520,4 +647,4 @@ A Json object of the PmTile's metadata
 
 #### Defined in
 
-[index.ts:177](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L177)
+[index.ts:226](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L226)

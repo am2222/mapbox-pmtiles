@@ -6,11 +6,12 @@
   "scripts": {
     "test": "vitest",
     "build": "vite build && cp ./dist/mapbox-pmtiles.umd.cjs ./dist/mapbox-pmtiles.umd.js",
+    "docs": "cd docs-src && npm ci && npm run build",
     "publish:patch": "npm version patch",
     "publish:minor": "npm version minor",
     "publish:major": "npm version major",
     "preversion": "npm ci && npm run test",
-    "version": "npm run build && git add -A dist",
+    "version": "npm run build && npm run docs && git add -A dist docs",
     "postversion": "echo postversion"
   },
   "author": {

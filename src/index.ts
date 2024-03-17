@@ -134,8 +134,51 @@ type TileID = {
 
 }
 /**
- * The main pmtile custom source
- * @param args 
+ * The PmTiles source. It mainly should work as a regular source as other mapbox sources.
+ * @public
+ * @remarks
+ * The Source will automatically set its type [vector|raster] based on the type defined in the pmTiles metadata. The different PmTiles 
+ * data type is defined as here: {@link https://github.com/protomaps/PMTiles/blob/main/spec/v3/spec.md#tile-type-tt}. We also use the
+ * rest of the headers to set source boundary. This includes `minZoom`, `maxZoom`, `minLon`, `minLat`, `maxLon` and `maxLat`  if they are
+ * available.
+ * 
+ * @param id  The unique id of the source
+ * @param options  The  main pmtiles options
+ * @param _dispatcher 
+ * @param _eventedParent 
+ * @example In order to use PmTiles source you need to define the source as a custom source to them map. this should only happen once
+ * ```js
+ * import mapboxgl from "mapbox-gl";
+ * 
+ * import { PmTilesSource } from "mapbox-pmtiles";
+ * //Define custom source
+ * mapboxgl.Style.setSourceType(PmTilesSource.SOURCE_TYPE, PmTilesSource);
+ * 
+ * map.on("load", () => {
+ * 
+ * const PMTILES_URL =
+ *    "https://r2-public.protomaps.com/protomaps-sample-datasets/protomaps-basemap-opensource-20230408.pmtiles";
+ * 
+ *     map.addSource("pmTileSourceName", {
+ *     type: PmTilesSource.SOURCE_TYPE, //Add this line
+ *     url: PMTILES_URL,
+ *     maxzoom: 10,
+ *     });
+ * 
+ *     map.current.showTileBoundaries = true;
+ *     map.current.addLayer({
+ *         id: "places",
+ *         source: "pmTileSourceName",
+ *         "source-layer": "places",
+ *         type: "circle",
+ *         paint: {
+ *             "circle-color": "steelblue",
+ *         },
+ *         maxzoom: 14,
+ *     });
+ * });
+ *     
+ * ```
  */
 export class PmTilesSource extends VectorTileSourceImpl {
     static SOURCE_TYPE = SOURCE_TYPE
@@ -177,7 +220,7 @@ export class PmTilesSource extends VectorTileSourceImpl {
     /**
      * An static function to get the metadata of a pmtiles
      * @public
-     * @param url {string} The pmTiles URL
+     * @param url The pmTiles URL
      * @returns A Json object of the PmTile's metadata
      */
     static async getMetadata(url: string): Promise<any> {
@@ -187,7 +230,7 @@ export class PmTilesSource extends VectorTileSourceImpl {
     /**
      * An static function to get the header of an pmtiles
      * @public
-     * @param url {string} The pmTiles URL
+     * @param url The pmTiles URL
      * @returns A Json object of the PmTile's header
      */
     static async getHeader(url: string): Promise<any> {
@@ -203,8 +246,8 @@ export class PmTilesSource extends VectorTileSourceImpl {
      * rest of the headers to set source boundary. This includes `minZoom`, `maxZoom`, `minLon`, `minLat`, `maxLon` and `maxLat`  if they are
      * available.
      * 
-     * @param id {string} The unique id of the source
-     * @param options {PmTilesOptions} The  main pmtiles options
+     * @param id  The unique id of the source
+     * @param options The  main pmtiles options
      * @param _dispatcher 
      * @param _eventedParent 
      * @example In order to use PmTiles source you need to define the source as a custom source to them map. this should only happen once

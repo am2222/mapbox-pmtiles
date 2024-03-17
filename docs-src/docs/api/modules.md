@@ -24,4 +24,4 @@ Renames and re-exports [PmTilesSource](classes/PmTilesSource.md)
 
 #### Defined in
 
-[index.ts:8](https://github.com/am2222/mapbox-pmtiles/blob/9bad176e/src/index.ts#L8)
+[index.ts:8](https://github.com/am2222/mapbox-pmtiles/blob/bf8a5c84/src/index.ts#L8)
