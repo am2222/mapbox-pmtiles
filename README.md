@@ -43,14 +43,66 @@ map.on("load", () => {
 
 ## JSDeliver
 
+Here you can use it in the webpages
+
+```html
+
+<script type="text/javascript"  src="https://cdn.jsdelivr.net/npm/mapbox-pmtiles@1/dist/mapbox-pmtiles.umd.min.js"></script>
+
+<script>
+    const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        center: [-74.5, 40], // starting position [lng, lat]
+        zoom: 9 ,// starting zoom,
+        accessToken:"pk.eyJ1IjoibWFqaWRob2phdGlyZWFkeSIsImEiOiJjbHJxbXZvZDEwMDJhMmtuMmx6NHEwYTV2In0.eLlTQdMMrimVg9NxacXFmg"
+    });
+    mapboxgl.Style.setSourceType(mapboxPmTiles.SOURCE_TYPE, mapboxPmTiles.PmTilesSource);
+
+    map.on("load", () => {
+
+        const PMTILES_URL =
+        "https://r2-public.protomaps.com/protomaps-sample-datasets/protomaps-basemap-opensource-20230408.pmtiles";
+
+        map.addSource("pmTileSourceName", {
+        type: mapboxPmTiles.SOURCE_TYPE, //Add this line
+        url: PMTILES_URL,
+        maxzoom: 10,
+        });
+
+        map.showTileBoundaries = true;
+        map.addLayer({
+            id: "places",
+            source: "pmTileSourceName",
+            "source-layer": "places",
+            type: "circle",
+            paint: {
+                "circle-color": "steelblue",
+            },
+            maxzoom: 14,
+        });
+    });
+</script>
+
+```
+
+Or you can use the following
+
+
 ```html
 
 <script type="module">
-import mapboxPmtiles from 'https://cdn.jsdelivr.net/npm/mapbox-pmtiles/+esm'
+import mapboxPmtiles from 'https://cdn.jsdelivr.net/npm/mapbox-pmtiles@1.0.29/+esm'
 </script>
 
-
 ```
+
+## Add a Vector TileSet
+
+
+
+## Add a raster TileSet
+
+
 
 ## What is PmTiles
 See the [PmTiles](https://docs.protomaps.com/pmtiles/) repository for more information 
