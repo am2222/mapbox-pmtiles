@@ -66,8 +66,8 @@ const config = {
         },
         items: [
           {
-            label: "Map",
-            to: "pathname:///html/map.html",
+            label: "Demo",
+            to: "pathname:///html/demo.html",
             position: "left",
           },
           {
@@ -99,10 +99,6 @@ const config = {
           {
             title: "More",
             items: [
-              {
-                label: "Map",
-                to: "pathname:///html/map.html",
-              },
               {
                 label: "Demo",
                 to: "pathname:///html/demo.html",
