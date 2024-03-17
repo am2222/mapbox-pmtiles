@@ -1,6 +1,6 @@
 {
   "name": "mapbox-pmtiles",
-  "version": "1.0.31",
+  "version": "1.0.32",
   "type": "module",
   "description": "A custom source to add PmTiles support to mapbox gl js",
   "scripts": {

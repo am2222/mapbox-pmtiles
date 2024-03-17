@@ -1443,8 +1443,8 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
    * rest of the headers to set source boundary. This includes `minZoom`, `maxZoom`, `minLon`, `minLat`, `maxLon` and `maxLat`  if they are
    * available.
    * 
-   * @param id {string} The unique id of the source
-   * @param options {PmTilesOptions} The  main pmtiles options
+   * @param id  The unique id of the source
+   * @param options The  main pmtiles options
    * @param _dispatcher 
    * @param _eventedParent 
    * @example In order to use PmTiles source you need to define the source as a custom source to them map. this should only happen once
@@ -1507,7 +1507,7 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
   /**
    * An static function to get the metadata of a pmtiles
    * @public
-   * @param url {string} The pmTiles URL
+   * @param url The pmTiles URL
    * @returns A Json object of the PmTile's metadata
    */
   static async getMetadata(url) {
@@ -1517,7 +1517,7 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
   /**
    * An static function to get the header of an pmtiles
    * @public
-   * @param url {string} The pmTiles URL
+   * @param url The pmTiles URL
    * @returns A Json object of the PmTile's header
    */
   static async getHeader(url) {
