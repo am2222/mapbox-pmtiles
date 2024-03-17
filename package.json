@@ -51,6 +51,5 @@
     "mapbox-gl": "^3.1.2",
     "pmtiles": "^3.0.3"
   },
-  "jsdelivr": "dist/mapbox-pmtiles.umd.js",
-  "browser": "dist/mapbox-pmtiles.umd.js"
+  "jsdelivr": "dist/mapbox-pmtiles.umd.js"
 }

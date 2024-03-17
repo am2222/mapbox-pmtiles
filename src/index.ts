@@ -6,7 +6,12 @@ import { PMTiles, Protocol, TileType } from "pmtiles";
 const VectorTileSourceImpl = mapboxgl.Style.getSourceType("vector");
 
 export const SOURCE_TYPE = "pmtile-source";
-
+/**
+ * Extends an object with another one
+ * @param dest the destination object
+ * @param sources the source objects
+ * @returns an object with all the keys from both dest and sources
+ */
 const extend = (dest: any, ...sources: any): any => {
     for (const src of sources) {
         for (const k in src) {
@@ -92,7 +97,7 @@ type MapboxMap = mapboxgl.Map & {
     painter: any
 }
 /**
- * Pmtiles Options
+ * Mapbox-Pmtiles Options
  */
 type PmTilesOptions = {
     /**
@@ -170,31 +175,85 @@ export class PmTilesSource extends VectorTileSourceImpl {
     contentType!: string;
 
     /**
-     * 
-     * @param url The pmTiles URL
+     * An static function to get the metadata of a pmtiles
+     * @public
+     * @param url {string} The pmTiles URL
      * @returns A Json object of the PmTile's metadata
      */
     static async getMetadata(url: string): Promise<any> {
         const instance = new PMTiles(url);
         return instance.getMetadata()
     }
-
     /**
-     * 
-     * @param args 
+     * An static function to get the header of an pmtiles
+     * @public
+     * @param url {string} The pmTiles URL
+     * @returns A Json object of the PmTile's header
      */
-    constructor(...args: [id: string, implementation: PmTilesOptions, dispatcher: any, eventedParent: any]) {
-        super(...args);
-        const [id, implementation, dispatcher, eventedParent] = args
+    static async getHeader(url: string): Promise<any> {
+        const instance = new PMTiles(url);
+        return instance.getHeader()
+    }
+    /**
+     * The PmTiles source. It mainly should work as a regular source as other mapbox sources.
+     * @public
+     * @remarks
+     * The Source will automatically set its type [vector|raster] based on the type defined in the pmTiles metadata. The different PmTiles 
+     * data type is defined as here: {@link https://github.com/protomaps/PMTiles/blob/main/spec/v3/spec.md#tile-type-tt}. We also use the
+     * rest of the headers to set source boundary. This includes `minZoom`, `maxZoom`, `minLon`, `minLat`, `maxLon` and `maxLat`  if they are
+     * available.
+     * 
+     * @param id {string} The unique id of the source
+     * @param options {PmTilesOptions} The  main pmtiles options
+     * @param _dispatcher 
+     * @param _eventedParent 
+     * @example In order to use PmTiles source you need to define the source as a custom source to them map. this should only happen once
+     * ```js
+     * import mapboxgl from "mapbox-gl";
+     * 
+     * import { PmTilesSource } from "mapbox-pmtiles";
+     * //Define custom source
+     * mapboxgl.Style.setSourceType(PmTilesSource.SOURCE_TYPE, PmTilesSource);
+     * 
+     * map.on("load", () => {
+     * 
+     * const PMTILES_URL =
+     *    "https://r2-public.protomaps.com/protomaps-sample-datasets/protomaps-basemap-opensource-20230408.pmtiles";
+     * 
+     *     map.addSource("pmTileSourceName", {
+     *     type: PmTilesSource.SOURCE_TYPE, //Add this line
+     *     url: PMTILES_URL,
+     *     maxzoom: 10,
+     *     });
+     * 
+     *     map.current.showTileBoundaries = true;
+     *     map.current.addLayer({
+     *         id: "places",
+     *         source: "pmTileSourceName",
+     *         "source-layer": "places",
+     *         type: "circle",
+     *         paint: {
+     *             "circle-color": "steelblue",
+     *         },
+     *         maxzoom: 14,
+     *     });
+     * });
+     *     
+     * ```
+     */
+    constructor(id: string, options: PmTilesOptions, _dispatcher: any, _eventedParent: any) {
+
+        super(...[id, options, _dispatcher, _eventedParent]);
+
         this.id = id;
         this._dataType = 'vector';
-        this.dispatcher = dispatcher;
-        this._implementation = implementation;
+        this.dispatcher = _dispatcher;
+        this._implementation = options;
         if (!this._implementation) {
-            this.fire(new ErrorEvent(new Error(`Missing implementation for ${this.id} custom source`)));
+            this.fire(new ErrorEvent(new Error(`Missing options for ${this.id} custom source`)));
         }
 
-        const { url } = implementation;
+        const { url } = options;
 
         this.reparseOverscaled = true;
         this.scheme = 'zxy';
@@ -215,14 +274,14 @@ export class PmTilesSource extends VectorTileSourceImpl {
 
     }
 
-    zoomToExtent() {
+    /**
+     * the extent of the entire source extracted from pmtiles header
+     * @returns {mapboxgl.LngLatBoundsLike} 
+     */
+    getExtent(): mapboxgl.LngLatBoundsLike {
         const { minZoom, maxZoom, minLon, minLat, maxLon, maxLat, centerZoom, centerLon, centerLat } = this.header
 
-        if (minZoom != null && maxZoom != null && minLon != null && minLat != null && maxLon != null && maxLat != null) {
-
-            this.map.fitBounds([centerLat, centerLon
-            ], { maxZoom: centerZoom });
-        }
+        return [minLon, minLat, maxLon, maxLat]
     }
 
     hasTile(tileID: TileID) {
@@ -237,7 +296,9 @@ export class PmTilesSource extends VectorTileSourceImpl {
             this.header = header;
             const { specVersion, clustered, tileType, minZoom, maxZoom, minLon, minLat, maxLon, maxLat, centerZoom, centerLon, centerLat } = header
 
-            if (minZoom != null && maxZoom != null && minLon != null && minLat != null && maxLon != null && maxLat != null) {
+            const requiredVariables= [minZoom, maxZoom, minLon, minLat, maxLon, maxLat]
+
+            if (!requiredVariables.includes(undefined) && !requiredVariables.includes(null)) {
                 this.tileBounds = new TileBounds(
                     [minLon, minLat, maxLon, maxLat],
                     minZoom,
@@ -245,8 +306,6 @@ export class PmTilesSource extends VectorTileSourceImpl {
                 );
                 this.minzoom = minZoom
                 this.maxzoom = maxZoom
-
-                // this.map.fitBounds([minLon, minLat, maxLon, maxLat], { maxZoom: centerZoom });
             }
 
             if (this.maxzoom == undefined) {
@@ -299,9 +358,11 @@ export class PmTilesSource extends VectorTileSourceImpl {
             if (callback) callback(err);
         });
     }
+
     loaded(): boolean {
         return this._loaded;
     }
+
     loadVectorTile(tile: Tile, callback: Callback<void>) {
         const done = (err: Error | null | undefined, data?: any) => {
             delete tile.request;
