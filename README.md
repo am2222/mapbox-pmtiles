@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![NPM Version](https://img.shields.io/npm/v/mapbox-pmtiles?style=flat-square)![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/am2222/mapbox-pmtiles/build.yml?style=flat-square&label=npm%20deploy)![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/am2222/mapbox-pmtiles/pages%2Fpages-build-deployment?style=flat-square&label=documentations%20build) [![](https://data.jsdelivr.com/v1/package/npm/mapbox-pmtiles/badge)](https://www.jsdelivr.com/package/npm/mapbox-pmtiles)
+![NPM Version](https://img.shields.io/npm/v/mapbox-pmtiles?style=flat-square) ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/am2222/mapbox-pmtiles/build.yml?style=flat-square&label=npm%20deploy) ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/am2222/mapbox-pmtiles/pages%2Fpages-build-deployment?style=flat-square&label=documentations%20build) [![](https://data.jsdelivr.com/v1/package/npm/mapbox-pmtiles/badge)](https://www.jsdelivr.com/package/npm/mapbox-pmtiles)
 
 </div>
 
