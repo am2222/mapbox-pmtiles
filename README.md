@@ -29,11 +29,21 @@ map.on("load", () => {
     const PMTILES_URL =
     "https://r2-public.protomaps.com/protomaps-sample-datasets/protomaps-basemap-opensource-20230408.pmtiles";
 
-    map.addSource("pmTileSourceName", {
-    type: PmTilesSource.SOURCE_TYPE, //Add this line
-    url: PMTILES_URL,
-    maxzoom: 10,
-    });
+    const header = await mapboxPmTiles.PmTilesSource.getHeader(PMTILES_URL);
+    const bounds = [
+          header.minLon,
+          header.minLat,
+          header.maxLon,
+          header.maxLat,
+        ];
+
+    map.addSource('pmTileSourceName', {
+          type: mapboxPmTiles.PmTilesSource.SOURCE_TYPE,
+          url: PMTILES_URL,
+          minzoom: header.minZoom,
+          maxzoom: header.maxZoom,
+          bounds: bounds,
+        });
 
     map.current.showTileBoundaries = true;
     map.current.addLayer({
