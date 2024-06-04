@@ -317,6 +317,9 @@ export class PmTilesSource extends VectorTileSourceImpl {
             this._loaded = true;
 
             extend(this, tileJSON);
+            // fix for the corrupted tilejson
+            this.minzoom = Number.parseInt(this.minzoom.toString()) || 0;
+            this.maxzoom = Number.parseInt(this.maxzoom.toString()) || 0;
             // we set this.type after extend to avoid overwriting 
             this.tileType = tileType
 
