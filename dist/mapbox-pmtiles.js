@@ -1519,6 +1519,8 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
       this._tileJSONRequest = void 0;
       this._loaded = true;
       extend(this, tileJSON);
+      this.minzoom = Number.parseInt(this.minzoom.toString()) || 0;
+      this.maxzoom = Number.parseInt(this.maxzoom.toString()) || 0;
       this.tileType = tileType;
       switch (tileType) {
         case TileType.Png:

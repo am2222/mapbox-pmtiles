@@ -29,11 +29,21 @@ map.on("load", () => {
     const PMTILES_URL =
     "https://r2-public.protomaps.com/protomaps-sample-datasets/protomaps-basemap-opensource-20230408.pmtiles";
 
-    map.addSource("pmTileSourceName", {
-    type: PmTilesSource.SOURCE_TYPE, //Add this line
-    url: PMTILES_URL,
-    maxzoom: 10,
-    });
+    const header = await mapboxPmTiles.PmTilesSource.getHeader(PMTILES_URL);
+    const bounds = [
+          header.minLon,
+          header.minLat,
+          header.maxLon,
+          header.maxLat,
+        ];
+
+    map.addSource('pmTileSourceName', {
+          type: mapboxPmTiles.PmTilesSource.SOURCE_TYPE,
+          url: PMTILES_URL,
+          minzoom: header.minZoom,
+          maxzoom: header.maxZoom,
+          bounds: bounds,
+        });
 
     map.current.showTileBoundaries = true;
     map.current.addLayer({
@@ -63,7 +73,6 @@ Here you can use it in the webpages
         container: 'map', // container ID
         center: [-74.5, 40], // starting position [lng, lat]
         zoom: 9 ,// starting zoom,
-        accessToken:"pk.eyJ1IjoibWFqaWRob2phdGlyZWFkeSIsImEiOiJjbHJxbXZvZDEwMDJhMmtuMmx6NHEwYTV2In0.eLlTQdMMrimVg9NxacXFmg"
     });
     mapboxgl.Style.setSourceType(mapboxPmTiles.SOURCE_TYPE, mapboxPmTiles.PmTilesSource);
 
@@ -72,11 +81,21 @@ Here you can use it in the webpages
         const PMTILES_URL =
         "https://r2-public.protomaps.com/protomaps-sample-datasets/protomaps-basemap-opensource-20230408.pmtiles";
 
-        map.addSource("pmTileSourceName", {
-        type: mapboxPmTiles.SOURCE_TYPE, //Add this line
-        url: PMTILES_URL,
-        maxzoom: 10,
-        });
+        const header = await mapboxPmTiles.PmTilesSource.getHeader(PMTILES_URL);
+        const bounds = [
+              header.minLon,
+              header.minLat,
+              header.maxLon,
+              header.maxLat,
+            ];
+    
+        map.addSource('pmTileSourceName', {
+              type: mapboxPmTiles.PmTilesSource.SOURCE_TYPE,
+              url: PMTILES_URL,
+              minzoom: header.minZoom,
+              maxzoom: header.maxZoom,
+              bounds: bounds,
+            });
 
         map.showTileBoundaries = true;
         map.addLayer({
