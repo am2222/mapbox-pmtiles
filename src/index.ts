@@ -293,7 +293,13 @@ export class PmTilesSource extends VectorTileSourceImpl {
         this.fire(new Event("dataloading", { dataType: "source" }));
         // We need to get both header and metadata 
         this._tileJSONRequest = Promise.all([this._instance.getHeader(), this._instance.getMetadata()]).then(([header, tileJSON]: any) => {
+            //first we set some of the header properties to the source using tileJSON
+            extend(this, tileJSON);
+            // fix for the corrupted tilejson
+            this.minzoom = Number.parseInt(this.minzoom.toString()) || 0;
+            this.maxzoom = Number.parseInt(this.maxzoom.toString()) || 0;
 
+            // we set min and max zoom from the header
             this.header = header;
             const { specVersion, clustered, tileType, minZoom, maxZoom, minLon, minLat, maxLon, maxLat, centerZoom, centerLon, centerLat } = header
 
@@ -316,10 +322,8 @@ export class PmTilesSource extends VectorTileSourceImpl {
             this._tileJSONRequest = undefined;
             this._loaded = true;
 
-            extend(this, tileJSON);
-            // fix for the corrupted tilejson
-            this.minzoom = Number.parseInt(this.minzoom.toString()) || 0;
-            this.maxzoom = Number.parseInt(this.maxzoom.toString()) || 0;
+            
+
             // we set this.type after extend to avoid overwriting 
             this.tileType = tileType
 
