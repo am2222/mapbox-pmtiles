@@ -1445,14 +1445,20 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
    */
   constructor(id, options, _dispatcher, _eventedParent) {
     super(...[id, options, _dispatcher, _eventedParent]);
+    this.scheme = "zxy";
     this.roundZoom = true;
+    this.promoteId = void 0;
     this.type = "vector";
+    this.dispatcher = void 0;
+    this.reparseOverscaled = true;
+    this._loaded = false;
+    this._dataType = "vector";
     this.id = id;
     this._dataType = "vector";
     this.dispatcher = _dispatcher;
     this._implementation = options;
     if (!this._implementation) {
-      this.fire(new ErrorEvent(new Error(`Missing options for ${this.id} custom source`)));
+      this.fire(new ErrorEvent(new Error(`Missing options for ${this.id} ${SOURCE_TYPE} source`)));
     }
     const { url } = options;
     this.reparseOverscaled = true;
@@ -1462,9 +1468,9 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
     this.type = "vector";
     this._protocol = new Protocol();
     this.tiles = [`pmtiles://${url}/{z}/{x}/{y}`];
-    const p = new PMTiles(url);
-    this._protocol.add(p);
-    this._instance = p;
+    const pmtilesInstance = new PMTiles(url);
+    this._protocol.add(pmtilesInstance);
+    this._instance = pmtilesInstance;
   }
   /**
    * An static function to get the metadata of a pmtiles
@@ -1491,13 +1497,15 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
    * @returns {mapboxgl.LngLatBoundsLike} 
    */
   getExtent() {
+    if (!this.header)
+      return [[-180, -90], [180, 90]];
     const { minZoom, maxZoom, minLon, minLat, maxLon, maxLat, centerZoom, centerLon, centerLat } = this.header;
     return [minLon, minLat, maxLon, maxLat];
   }
   hasTile(tileID) {
     return !this.tileBounds || this.tileBounds.contains(tileID.canonical);
   }
-  load(callback) {
+  async load(callback) {
     this._loaded = false;
     this.fire(new Event("dataloading", { dataType: "source" }));
     this._tileJSONRequest = Promise.all([this._instance.getHeader(), this._instance.getMetadata()]).then(([header, tileJSON]) => {
@@ -1535,6 +1543,9 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
         case TileType.Avif:
           this.contentType = "image/avif";
           break;
+        case TileType.Mvt:
+          this.contentType = "application/vnd.mapbox-vector-tile";
+          break;
       }
       if ([TileType.Jpeg, TileType.Png].includes(this.tileType)) {
         this.loadTile = this.loadRasterTile;
@@ -1556,6 +1567,7 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
       if (callback)
         callback(err2);
     });
+    return this._tileJSONRequest;
   }
   loaded() {
     return this._loaded;
