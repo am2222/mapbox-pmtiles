@@ -297,9 +297,7 @@ export class PmTilesSource extends VectorTileSourceImpl {
         this._tileJSONRequest =  Promise.all([this._instance.getHeader(), this._instance.getMetadata()]).then(([header, tileJSON]: any) => {
             //first we set some of the header properties to the source using tileJSON
             extend(this, tileJSON);
-            // fix for the corrupted tilejson
-            this.minzoom = Number.parseInt(this.minzoom.toString()) || 0;
-            this.maxzoom = Number.parseInt(this.maxzoom.toString()) || 0;
+            
 
             // we set min and max zoom from the header
             this.header = header;
@@ -320,7 +318,10 @@ export class PmTilesSource extends VectorTileSourceImpl {
             if (this.maxzoom == undefined) {
                 console.warn('The maxzoom parameter is not defined in the source json. This can cause memory leak. So make sure to define maxzoom in the layer')
             }
-
+            // fix for the corrupted tilejson
+            this.minzoom = Number.parseInt(this.minzoom.toString()) || 0;
+            this.maxzoom = Number.parseInt(this.maxzoom.toString()) || 0;
+            
             this._tileJSONRequest = undefined;
             this._loaded = true;      
 
