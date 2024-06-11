@@ -1510,8 +1510,6 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
     this.fire(new Event("dataloading", { dataType: "source" }));
     this._tileJSONRequest = Promise.all([this._instance.getHeader(), this._instance.getMetadata()]).then(([header, tileJSON]) => {
       extend(this, tileJSON);
-      this.minzoom = Number.parseInt(this.minzoom.toString()) || 0;
-      this.maxzoom = Number.parseInt(this.maxzoom.toString()) || 0;
       this.header = header;
       const { specVersion, clustered, tileType, minZoom, maxZoom, minLon, minLat, maxLon, maxLat, centerZoom, centerLon, centerLat } = header;
       const requiredVariables = [minZoom, maxZoom, minLon, minLat, maxLon, maxLat];
@@ -1527,6 +1525,8 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
       if (this.maxzoom == void 0) {
         console.warn("The maxzoom parameter is not defined in the source json. This can cause memory leak. So make sure to define maxzoom in the layer");
       }
+      this.minzoom = Number.parseInt(this.minzoom.toString()) || 0;
+      this.maxzoom = Number.parseInt(this.maxzoom.toString()) || 0;
       this._tileJSONRequest = void 0;
       this._loaded = true;
       this.tileType = tileType;
