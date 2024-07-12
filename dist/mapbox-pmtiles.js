@@ -1445,9 +1445,8 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
    */
   constructor(id, options, _dispatcher, _eventedParent) {
     super(...[id, options, _dispatcher, _eventedParent]);
-    this.scheme = "zxy";
+    this.scheme = "xyz";
     this.roundZoom = true;
-    this.promoteId = void 0;
     this.type = "vector";
     this.dispatcher = void 0;
     this.reparseOverscaled = true;
@@ -1462,7 +1461,7 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
     }
     const { url } = options;
     this.reparseOverscaled = true;
-    this.scheme = "zxy";
+    this.scheme = "xyz";
     this.tileSize = 512;
     this._loaded = false;
     this.type = "vector";
