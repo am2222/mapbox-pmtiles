@@ -1,5 +1,5 @@
 // Mapbox import
-import mapboxgl from "mapbox-gl";
+import mapboxgl, { VectorSource } from "mapbox-gl";
 import { PMTiles, Protocol, TileType } from "pmtiles";
 
 // @ts-expect-error
@@ -99,14 +99,15 @@ type MapboxMap = mapboxgl.Map & {
 /**
  * Mapbox-Pmtiles Options
  */
-type PmTilesOptions = {
+type PmTilesOptions = Omit<VectorSource, 'format' | 'scheme' | 'type'> & {
     /**
      * The pmtile url
      */
-    url: string
+    url: string,
 }
 
 
+type PmtileSource = Omit<VectorSource, 'format' | 'scheme' | 'type'>
 
 type Tile = {
     setTexture(arg0: (data: any) => any, painter: any): unknown;
@@ -176,35 +177,34 @@ type TileID = {
  *     
  * ```
  */
-export class PmTilesSource extends VectorTileSourceImpl {
+export class PmTilesSource extends VectorTileSourceImpl implements PmtileSource {
     [x: string]: any;
     static SOURCE_TYPE = SOURCE_TYPE
 
     id: string;
-    scheme: string='zxy';
+    scheme = 'xyz';
     minzoom!: number;
     maxzoom!: number;
     tileSize: number;
     attribution: string | undefined;
     tiles: string[];
-    
+
 
     roundZoom: boolean = true;
     tileBounds: TileBounds | undefined;
     minTileCacheSize: number | undefined;
     maxTileCacheSize: number | undefined;
-    promoteId: string | undefined=undefined;
-    type: string = 'vector';
-    
+    type = 'vector';
+
     scope: string | undefined;
-    dispatcher=undefined;
-    reparseOverscaled: boolean=true;
+    dispatcher = undefined;
+    reparseOverscaled: boolean = true;
     map!: MapboxMap;
 
-    _loaded= false;
-    
-    _dataType= 'vector';
-    _implementation:PmTilesOptions |undefined ;
+    _loaded = false;
+
+    _dataType = 'vector';
+    _implementation: PmTilesOptions | undefined;
     _protocol: Protocol;
     _instance: PMTiles;
     _tileJSONRequest: Promise<any> | undefined;
@@ -257,16 +257,13 @@ export class PmTilesSource extends VectorTileSourceImpl {
         const { url } = options;
 
         this.reparseOverscaled = true;
-        this.scheme = 'zxy';
+        this.scheme = 'xyz';
         this.tileSize = 512;
-
         this._loaded = false;
-
         this.type = 'vector';
+
         this._protocol = new Protocol();
-
         this.tiles = [`pmtiles://${url}/{z}/{x}/{y}`]
-
         const pmtilesInstance = new PMTiles(url);
 
         // this is so we share one instance across the JS code and the map renderer
@@ -280,7 +277,7 @@ export class PmTilesSource extends VectorTileSourceImpl {
      * @returns {mapboxgl.LngLatBoundsLike} 
      */
     getExtent(): mapboxgl.LngLatBoundsLike {
-        if(!this.header) return [[-180, -90], [180, 90] ]
+        if (!this.header) return [[-180, -90], [180, 90]]
 
         const { minZoom, maxZoom, minLon, minLat, maxLon, maxLat, centerZoom, centerLon, centerLat } = this.header
 
@@ -293,17 +290,17 @@ export class PmTilesSource extends VectorTileSourceImpl {
     async load(callback?: Callback<void>) {
         this._loaded = false;
         this.fire(new Event("dataloading", { dataType: "source" }));
+
         // We need to get both header and metadata 
-        this._tileJSONRequest =  Promise.all([this._instance.getHeader(), this._instance.getMetadata()]).then(([header, tileJSON]: any) => {
+        this._tileJSONRequest = Promise.all([this._instance.getHeader(), this._instance.getMetadata()]).then(([header, tileJSON]: any) => {
             //first we set some of the header properties to the source using tileJSON
             extend(this, tileJSON);
-            
 
             // we set min and max zoom from the header
             this.header = header;
             const { specVersion, clustered, tileType, minZoom, maxZoom, minLon, minLat, maxLon, maxLat, centerZoom, centerLon, centerLat } = header
 
-            const requiredVariables= [minZoom, maxZoom, minLon, minLat, maxLon, maxLat]
+            const requiredVariables = [minZoom, maxZoom, minLon, minLat, maxLon, maxLat]
 
             if (!requiredVariables.includes(undefined) && !requiredVariables.includes(null)) {
                 this.tileBounds = new TileBounds(
@@ -321,9 +318,9 @@ export class PmTilesSource extends VectorTileSourceImpl {
             // fix for the corrupted tilejson
             this.minzoom = Number.parseInt(this.minzoom.toString()) || 0;
             this.maxzoom = Number.parseInt(this.maxzoom.toString()) || 0;
-            
+
             this._tileJSONRequest = undefined;
-            this._loaded = true;      
+            this._loaded = true;
 
             // we set this.type after extend to avoid overwriting 
             this.tileType = tileType
@@ -369,6 +366,7 @@ export class PmTilesSource extends VectorTileSourceImpl {
             this.fire(new ErrorEvent(err));
             if (callback) callback(err);
         });
+
 
         return this._tileJSONRequest;
     }
