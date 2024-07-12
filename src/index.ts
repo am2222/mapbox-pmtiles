@@ -1,9 +1,9 @@
 // Mapbox import
-import mapboxgl, { VectorSource } from "mapbox-gl";
+import mapboxgl, { PromoteIdSpecification, VectorTileSource } from "mapbox-gl";
 import { PMTiles, Protocol, TileType } from "pmtiles";
 
 // @ts-expect-error
-const VectorTileSourceImpl = mapboxgl.Style.getSourceType("vector");
+const VectorTileSourceImpl: Class<VectorTileSource> = mapboxgl.Style.getSourceType<VectorTileSource>("vector");
 
 export const SOURCE_TYPE = "pmtile-source";
 /**
@@ -33,6 +33,8 @@ const mercatorYFromLat = (lat: number): number => {
         360
     );
 }
+
+
 
 class TileBounds {
     bounds;
@@ -99,15 +101,21 @@ type MapboxMap = mapboxgl.Map & {
 /**
  * Mapbox-Pmtiles Options
  */
-type PmTilesOptions = Omit<VectorSource, 'format' | 'scheme' | 'type'> & {
+type PmTilesOptions = {
     /**
      * The pmtile url
      */
     url: string,
+
+    /**
+     * A property to use as a feature id (for feature state). see [`promoteId`](https://docs.mapbox.com/mapbox-gl-js/style-spec/sources/#vector-promoteId)
+     */
+    promoteId?: PromoteIdSpecification | null | undefined;
+
+    minzoom?: number;
+    maxzoom?: number;
 }
 
-
-type PmtileSource = Omit<VectorSource, 'format' | 'scheme' | 'type'>
 
 type Tile = {
     setTexture(arg0: (data: any) => any, painter: any): unknown;
@@ -177,7 +185,7 @@ type TileID = {
  *     
  * ```
  */
-export class PmTilesSource extends VectorTileSourceImpl implements PmtileSource {
+export class PmTilesSource extends VectorTileSourceImpl {
     [x: string]: any;
     static SOURCE_TYPE = SOURCE_TYPE
 
@@ -207,7 +215,6 @@ export class PmTilesSource extends VectorTileSourceImpl implements PmtileSource 
     _implementation: PmTilesOptions | undefined;
     _protocol: Protocol;
     _instance: PMTiles;
-    _tileJSONRequest: Promise<any> | undefined;
     loadTile!: (tile: Tile, callback: Callback<void>) => void;
     tileType!: TileType;
     header: any;
@@ -287,12 +294,13 @@ export class PmTilesSource extends VectorTileSourceImpl implements PmtileSource 
     hasTile(tileID: TileID) {
         return !this.tileBounds || this.tileBounds.contains(tileID.canonical);
     }
+
     async load(callback?: Callback<void>) {
         this._loaded = false;
         this.fire(new Event("dataloading", { dataType: "source" }));
 
         // We need to get both header and metadata 
-        this._tileJSONRequest = Promise.all([this._instance.getHeader(), this._instance.getMetadata()]).then(([header, tileJSON]: any) => {
+        return Promise.all([this._instance.getHeader(), this._instance.getMetadata()]).then(([header, tileJSON]: any) => {
             //first we set some of the header properties to the source using tileJSON
             extend(this, tileJSON);
 
@@ -315,11 +323,10 @@ export class PmTilesSource extends VectorTileSourceImpl implements PmtileSource 
             if (this.maxzoom == undefined) {
                 console.warn('The maxzoom parameter is not defined in the source json. This can cause memory leak. So make sure to define maxzoom in the layer')
             }
-            // fix for the corrupted tilejson
+            // fix for the corrupted tileJson
             this.minzoom = Number.parseInt(this.minzoom.toString()) || 0;
             this.maxzoom = Number.parseInt(this.maxzoom.toString()) || 0;
 
-            this._tileJSONRequest = undefined;
             this._loaded = true;
 
             // we set this.type after extend to avoid overwriting 
@@ -366,9 +373,6 @@ export class PmTilesSource extends VectorTileSourceImpl implements PmtileSource 
             this.fire(new ErrorEvent(err));
             if (callback) callback(err);
         });
-
-
-        return this._tileJSONRequest;
     }
 
     loaded(): boolean {

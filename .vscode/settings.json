@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "Basemap",
     "dataloading",
     "Evented",
     "mapbox",
@@ -7,6 +8,8 @@
     "minzoom",
     "pmtile",
     "pmtiles",
-    "reparse"
+    "reparse",
+    "steelblue",
+    "tileset"
   ]
 }
