@@ -1507,7 +1507,7 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
   async load(callback) {
     this._loaded = false;
     this.fire(new Event("dataloading", { dataType: "source" }));
-    this._tileJSONRequest = Promise.all([this._instance.getHeader(), this._instance.getMetadata()]).then(([header, tileJSON]) => {
+    return Promise.all([this._instance.getHeader(), this._instance.getMetadata()]).then(([header, tileJSON]) => {
       extend(this, tileJSON);
       this.header = header;
       const { specVersion, clustered, tileType, minZoom, maxZoom, minLon, minLat, maxLon, maxLat, centerZoom, centerLon, centerLat } = header;
@@ -1526,7 +1526,6 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
       }
       this.minzoom = Number.parseInt(this.minzoom.toString()) || 0;
       this.maxzoom = Number.parseInt(this.maxzoom.toString()) || 0;
-      this._tileJSONRequest = void 0;
       this._loaded = true;
       this.tileType = tileType;
       switch (tileType) {
@@ -1566,7 +1565,6 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
       if (callback)
         callback(err2);
     });
-    return this._tileJSONRequest;
   }
   loaded() {
     return this._loaded;
