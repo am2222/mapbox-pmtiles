@@ -136,7 +136,7 @@ var hMap = function(cd, mb, r) {
     le[i2] = le[i2 - 1] + l[i2 - 1] << 1;
   }
   var co;
-  if (r) {
+  {
     co = new u16(1 << mb);
     var rvb = 15 - mb;
     for (i2 = 0; i2 < s; ++i2) {
@@ -147,13 +147,6 @@ var hMap = function(cd, mb, r) {
         for (var m = v | (1 << r_1) - 1; v <= m; ++v) {
           co[rev[v] >> rvb] = sv;
         }
-      }
-    }
-  } else {
-    co = new u16(s);
-    for (i2 = 0; i2 < s; ++i2) {
-      if (cd[i2]) {
-        co[i2] = rev[le[cd[i2] - 1]++] >> 15 - cd[i2];
       }
     }
   }
@@ -176,8 +169,8 @@ var fdt = new u8(32);
 for (i = 0; i < 32; ++i)
   fdt[i] = 5;
 var i;
-var flrm = /* @__PURE__ */ hMap(flt, 9, 1);
-var fdrm = /* @__PURE__ */ hMap(fdt, 5, 1);
+var flrm = /* @__PURE__ */ hMap(flt, 9);
+var fdrm = /* @__PURE__ */ hMap(fdt, 5);
 var max = function(a) {
   var m = a[0];
   for (var i2 = 1; i2 < a.length; ++i2) {
@@ -198,8 +191,6 @@ var shft = function(p) {
   return (p + 7) / 8 | 0;
 };
 var slc = function(v, s, e) {
-  if (s == null || s < 0)
-    s = 0;
   if (e == null || e > v.length)
     e = v.length;
   var n = new u8(e - s);
@@ -233,7 +224,7 @@ var err = function(ind, msg, nt) {
   return e;
 };
 var inflt = function(dat, st, buf, dict) {
-  var sl = dat.length, dl = dict ? dict.length : 0;
+  var sl = dat.length, dl = 0;
   if (!sl || st.f && !st.l)
     return buf || new u8(0);
   var noBuf = !buf || st.i != 2;
@@ -280,7 +271,7 @@ var inflt = function(dat, st, buf, dict) {
         }
         pos += hcLen * 3;
         var clb = max(clt), clbmsk = (1 << clb) - 1;
-        var clm = hMap(clt, clb, 1);
+        var clm = hMap(clt, clb);
         for (var i2 = 0; i2 < tl; ) {
           var r = clm[bits(dat, pos, clbmsk)];
           pos += r & 15;
@@ -302,8 +293,8 @@ var inflt = function(dat, st, buf, dict) {
         var lt = ldt.subarray(0, hLit), dt = ldt.subarray(hLit);
         lbt = max(lt);
         dbt = max(dt);
-        lm = hMap(lt, lbt, 1);
-        dm = hMap(dt, dbt, 1);
+        lm = hMap(lt, lbt);
+        dm = hMap(dt, dbt);
       } else
         err(1);
       if (pos > tbts) {
@@ -401,16 +392,16 @@ var zls = function(d, dict) {
   return (d[1] >> 3 & 4) + 2;
 };
 function inflateSync(data, opts) {
-  return inflt(data, { i: 2 }, opts && opts.out, opts && opts.dictionary);
+  return inflt(data, { i: 2 }, opts, opts);
 }
 function gunzipSync(data, opts) {
   var st = gzs(data);
   if (st + 8 > data.length)
     err(6, "invalid gzip data");
-  return inflt(data.subarray(st, -8), { i: 2 }, opts && opts.out || new u8(gzl(data)), opts && opts.dictionary);
+  return inflt(data.subarray(st, -8), { i: 2 }, new u8(gzl(data)), opts);
 }
 function unzlibSync(data, opts) {
-  return inflt(data.subarray(zls(data, opts && opts.dictionary), -4), { i: 2 }, opts && opts.out, opts && opts.dictionary);
+  return inflt(data.subarray(zls(data, opts), -4), { i: 2 }, opts, opts);
 }
 function decompressSync(data, opts) {
   return data[0] == 31 && data[1] == 139 && data[2] == 8 ? gunzipSync(data, opts) : (data[0] & 15) != 8 || data[0] >> 4 > 7 || (data[0] << 8 | data[1]) % 31 ? inflateSync(data, opts) : unzlibSync(data, opts);
