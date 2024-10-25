@@ -1487,11 +1487,17 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
    */
   getExtent() {
     if (!this.header) return [[-180, -90], [180, 90]];
-    const { minZoom, maxZoom, minLon, minLat, maxLon, maxLat, centerZoom, centerLon, centerLat } = this.header;
+    const { minLon, minLat, maxLon, maxLat } = this.header;
     return [minLon, minLat, maxLon, maxLat];
   }
   hasTile(tileID) {
     return !this.tileBounds || this.tileBounds.contains(tileID.canonical);
+  }
+  fixTile(tile) {
+    if (!tile.destroy) {
+      tile.destroy = () => {
+      };
+    }
   }
   async load(callback) {
     this._loaded = false;
@@ -1618,6 +1624,7 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
           true
         );
     };
+    this.fixTile(tile);
     if (!tile.actor || tile.state === "expired") {
       tile.actor = this._tileWorkers[url] = this._tileWorkers[url] || this.dispatcher.getActor();
       tile.request = this._protocol.tile({ ...request }, afterLoad);
@@ -1658,6 +1665,7 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
       tile.tileID.canonical.url(this.tiles, this.scheme)
     );
     const request = (_b2 = this.map) == null ? void 0 : _b2._requestManager.transformRequest(url, "Tile");
+    this.fixTile(tile);
     const controller = new AbortController();
     tile.request = { cancel: () => controller.abort() };
     this._protocol.tile(request, controller).then(done.bind(this)).catch((error) => {
