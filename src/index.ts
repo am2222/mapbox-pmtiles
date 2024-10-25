@@ -118,6 +118,7 @@ type PmTilesOptions = {
 
 
 type Tile = {
+    destroy: () => void;
     setTexture(arg0: (data: any) => any, painter: any): unknown;
     request: any;
     aborted: any;
@@ -286,7 +287,7 @@ export class PmTilesSource extends VectorTileSourceImpl {
     getExtent(): mapboxgl.LngLatBoundsLike {
         if (!this.header) return [[-180, -90], [180, 90]]
 
-        const { minZoom, maxZoom, minLon, minLat, maxLon, maxLat, centerZoom, centerLon, centerLat } = this.header
+        const {  minLon, minLat, maxLon, maxLat } = this.header
 
         return [minLon, minLat, maxLon, maxLat]
     }
@@ -295,6 +296,13 @@ export class PmTilesSource extends VectorTileSourceImpl {
         return !this.tileBounds || this.tileBounds.contains(tileID.canonical);
     }
 
+    fixTile(tile:Tile){
+        if(!tile.destroy){
+            tile.destroy=()=>{
+                
+            }
+        }
+    }
     async load(callback?: Callback<void>) {
         this._loaded = false;
         this.fire(new Event("dataloading", { dataType: "source" }));
@@ -450,6 +458,7 @@ export class PmTilesSource extends VectorTileSourceImpl {
                 );
         };
 
+        this.fixTile(tile)
         if (!tile.actor || tile.state === "expired") {
             tile.actor = this._tileWorkers[url] = this._tileWorkers[url] || this.dispatcher.getActor();
 
@@ -505,7 +514,7 @@ export class PmTilesSource extends VectorTileSourceImpl {
             tile.tileID.canonical.url(this.tiles, this.scheme)
         );
         const request = this.map?._requestManager.transformRequest(url, "Tile");
-
+        this.fixTile(tile)
         const controller = new AbortController();
         tile.request = { cancel: () => controller.abort() };
         this._protocol.tile(request, controller).then(done.bind(this))
