@@ -1214,8 +1214,7 @@ var SharedPromiseCache = class {
       const p = new Promise((resolve, reject) => {
         source.getBytes(offset, length, void 0, header.etag).then((resp) => {
           resolve(resp.data);
-          if (this.cache.has(cacheKey))
-            ;
+          if (this.cache.has(cacheKey)) ;
           this.prune();
         }).catch((e) => {
           reject(e);
@@ -1487,8 +1486,7 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
    * @returns {mapboxgl.LngLatBoundsLike} 
    */
   getExtent() {
-    if (!this.header)
-      return [[-180, -90], [180, 90]];
+    if (!this.header) return [[-180, -90], [180, 90]];
     const { minZoom, maxZoom, minLon, minLat, maxLon, maxLat, centerZoom, centerLon, centerLat } = this.header;
     return [minLon, minLat, maxLon, maxLat];
   }
@@ -1553,8 +1551,7 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
       );
     }).catch((err2) => {
       this.fire(new ErrorEvent(err2));
-      if (callback)
-        callback(err2);
+      if (callback) callback(err2);
     });
   }
   loaded() {
@@ -1565,15 +1562,13 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
     const done = (err2, data) => {
       var _a3, _b3;
       delete tile.request;
-      if (tile.aborted)
-        return callback(null);
+      if (tile.aborted) return callback(null);
       if (err2 && err2.status !== 404) {
         return callback(err2);
       }
       if (data && data.resourceTiming)
         tile.resourceTiming = data.resourceTiming;
-      if (((_a3 = this.map) == null ? void 0 : _a3._refreshExpiredTiles) && data)
-        tile.setExpiryData(data);
+      if (((_a3 = this.map) == null ? void 0 : _a3._refreshExpiredTiles) && data) tile.setExpiryData(data);
       tile.loadVectorData(data, (_b3 = this.map) == null ? void 0 : _b3.painter);
       callback(null);
       if (tile.reloadCallback) {
@@ -1613,8 +1608,7 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
         expires,
         rawData: data
       };
-      if (this.map._refreshExpiredTiles)
-        tile.setExpiryData({ cacheControl, expires });
+      if (this.map._refreshExpiredTiles) tile.setExpiryData({ cacheControl, expires });
       if (tile.actor)
         tile.actor.send(
           "loadTile",
@@ -1640,8 +1634,7 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
     var _a2, _b2;
     const done = ({ data, cacheControl, expires }) => {
       delete tile.request;
-      if (tile.aborted)
-        return callback(null);
+      if (tile.aborted) return callback(null);
       if (data === null || data === void 0) {
         const emptyImage = { width: this.tileSize, height: this.tileSize, data: null };
         this.loadRasterTileData(tile, emptyImage);
@@ -1650,8 +1643,7 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
       }
       if (data && data.resourceTiming)
         tile.resourceTiming = data.resourceTiming;
-      if (this.map._refreshExpiredTiles)
-        tile.setExpiryData({ cacheControl, expires });
+      if (this.map._refreshExpiredTiles) tile.setExpiryData({ cacheControl, expires });
       const blob = new window.Blob([new Uint8Array(data)], { type: "image/png" });
       window.createImageBitmap(blob).then((imageBitmap) => {
         this.loadRasterTileData(tile, imageBitmap);
@@ -1669,8 +1661,7 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
     const controller = new AbortController();
     tile.request = { cancel: () => controller.abort() };
     this._protocol.tile(request, controller).then(done.bind(this)).catch((error) => {
-      if (error.code === 20)
-        return;
+      if (error.code === 20) return;
       tile.state = "errored";
       callback(error);
     });
