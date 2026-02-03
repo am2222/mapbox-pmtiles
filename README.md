@@ -6,9 +6,10 @@
 
 </div>
 
-## Mapbox-PmTiles
-Add PmTiles support to mapbox
+## Mapbox-PMTiles
+Add [PMTiles](https://docs.protomaps.com/pmtiles/) support to Mapbox.
 
+This library requires Mapbox GL JS v3 to work.
 
 ## Usage
 
@@ -126,7 +127,7 @@ import mapboxPmtiles from 'https://cdn.jsdelivr.net/npm/mapbox-pmtiles@1.0.29/+e
 Just pass your `pmtile` url and this plugin will detect tileset's type and format from header automatically. ;) 
 
 
-## What is PmTiles
-See the [PmTiles](https://docs.protomaps.com/pmtiles/) repository for more information 
+## What is PMTiles
+See the [PMTiles](https://docs.protomaps.com/pmtiles/) repository for more information 
 
 
