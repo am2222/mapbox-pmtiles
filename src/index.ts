@@ -206,7 +206,7 @@ export class PmTilesSource extends VectorTileSourceImpl {
     type = 'vector';
 
     scope: string | undefined;
-    dispatcher = undefined;
+    dispatcher?: { getActor(): any };
     reparseOverscaled: boolean = true;
     map!: MapboxMap;
 
@@ -460,7 +460,7 @@ export class PmTilesSource extends VectorTileSourceImpl {
 
         this.fixTile(tile)
         if (!tile.actor || tile.state === "expired") {
-            tile.actor = this._tileWorkers[url] = this._tileWorkers[url] || this.dispatcher.getActor();
+            tile.actor = this._tileWorkers[url] = this._tileWorkers[url] || this.dispatcher?.getActor();
 
             tile.request = this._protocol.tile({ ...request }, afterLoad);
             // always load tiles on the main thread and pass the result instead of requesting a worker to do so
