@@ -1438,7 +1438,6 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
     this.scheme = "xyz";
     this.roundZoom = true;
     this.type = "vector";
-    this.dispatcher = void 0;
     this.reparseOverscaled = true;
     this._loaded = false;
     this._dataType = "vector";
@@ -1564,7 +1563,7 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
     return this._loaded;
   }
   loadVectorTile(tile, callback) {
-    var _a2, _b2, _c;
+    var _a2, _b2, _c, _d;
     const done = (err2, data) => {
       var _a3, _b3;
       delete tile.request;
@@ -1626,7 +1625,7 @@ const _PmTilesSource = class _PmTilesSource extends VectorTileSourceImpl {
     };
     this.fixTile(tile);
     if (!tile.actor || tile.state === "expired") {
-      tile.actor = this._tileWorkers[url] = this._tileWorkers[url] || this.dispatcher.getActor();
+      tile.actor = this._tileWorkers[url] = this._tileWorkers[url] || ((_d = this.dispatcher) == null ? void 0 : _d.getActor());
       tile.request = this._protocol.tile({ ...request }, afterLoad);
     } else if (tile.state === "loading") {
       tile.reloadCallback = callback;
